@@ -3,53 +3,71 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Log;
+use App\Http\Requests\RegisterStep1Request; // Step 1のリクエストをインポート
+use App\Http\Requests\RegisterStep2Request; // Step 2のリクエストをインポート
+use App\Actions\Fortify\CreateNewUser; // CreateNewUserアクションをインポート
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     /**
-     * Step 2 画面表示 (/register/step2)
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * Step 1のデータを受け取り、バリデーション後にCreateNewUserアクションを実行します。
      */
-    public function createStep2(Request $request)
+    public function storeStep1(RegisterStep1Request $request)
     {
-        // Step 1のデータがない場合はStep 1へリダイレクト
-        if (!Session::has('register_step1_data')) {
-            return redirect()->route('register');
+        // RegisterStep1Requestのバリデーションが成功した後に、CreateNewUserアクションを実行します。
+        // CreateNewUserアクション内で、Step 1のデータがセッションに保存され、Step 2へリダイレクトされます。
+
+        // FortifyのCreateNewUserロジックを実行
+        // ここでHttpResponseException（リダイレクト）が発生し、Step 2へ遷移します。
+        // Note: Fortifyはrequest objectではなく、$request->all() (array)を受け取る想定です。
+        app(CreatesNewUsers::class)->create($request->all());
+
+        // ここには到達しないはずですが、念のため
+        return redirect()->route('register.step2');
+    }
+
+    /**
+     * Step 2のフォームを表示します。
+     */
+    public function createStep2()
+    {
+        // Step 1のデータがセッションにない場合、Step 1へ戻す
+        if (!Session::get('register_step1_data')) {
+            return redirect()->route('register.step1');
         }
         return view('auth.register-step2');
     }
 
     /**
-     * Step 2 登録処理 (FortifyのCreateNewUserを呼び出す)
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Laravel\Fortify\Contracts\CreatesNewUsers  $creator
-     * @return \Illuminate\Http\RedirectResponse
+     * Step 2のデータを受け取り、バリデーション後にCreateNewUserアクションを再実行してユーザーを登録します。
      */
-    public function storeStep2(Request $request, CreatesNewUsers $creator)
+    public function storeStep2(RegisterStep2Request $request) // ★ RegisterStep2Request を使用
     {
-        $input = $request->all();
+        // RegisterStep2Requestのバリデーションが成功した後に、CreateNewUserアクションを実行します。
+        // CreateNewUser内でStep 1とStep 2のデータをマージしてDBに保存し、ログイン処理まで行われます。
 
-        try {
-            // Fortifyの登録処理を実行 (CreateNewUser::create()が呼ばれる)
-            // この中でユーザーがDBに登録され、自動的にログインされる
-            $user = $creator->create($input);
+        $step1_data = Session::get('register_step1_data');
 
-            // 登録成功後、RouteServiceProvider::HOME (現在 /weight-logs) へリダイレクト
-            return redirect()->intended(config('fortify.home'));
-        } catch (ValidationException $e) {
-            // バリデーションエラー
-            return redirect()->route('register.step2')
-                ->withInput()
-                ->withErrors($e->errors());
-        } catch (\Exception $e) {
-            // その他のエラー
-            Log::error('User registration error in AuthController: ' . $e->getMessage());
-            return redirect()->route('register.step2')->withInput()->withErrors(['general' => 'ユーザー登録中に予期せぬエラーが発生しました。']);
+        if (!$step1_data) {
+            // セッション切れ対策
+            return redirect()->route('register.step1')->withErrors(['error' => '登録プロセスが中断されました。最初からやり直してください。']);
         }
+
+        // FortifyのRegisteredUserController::store()の処理を再現
+        $user = app(CreatesNewUsers::class)->create(array_merge(
+            $step1_data,
+            $request->all()
+        ));
+
+        // セッションデータをクリア（CreateNewUser内でクリアされていない場合を考慮）
+        Session::forget('register_step1_data');
+
+        // ユーザーをログインさせ、リダイレクト
+        Auth::login($user);
+
+        return redirect()->route('weight-logs'); // 登録完了後のリダイレクト先
     }
 }

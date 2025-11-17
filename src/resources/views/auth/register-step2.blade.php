@@ -12,7 +12,7 @@
     <div class="subtitle">新規会員登録</div>
     <div class="subtitle-detail">STEP2: 初期体重の入力</div> 
 
-    <form method="POST" action="{{ route('register') }}" class="auth-form">
+    <form method="POST" action="{{ route('register.step2.store') }}" class="auth-form">
         @csrf
 
         <div class="form-group">

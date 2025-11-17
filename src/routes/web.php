@@ -23,13 +23,13 @@ Route::middleware(['guest'])->group(function () {
     })->name('register.step1');
 
     // Fortifyの登録POSTルート (POST /register)
-    Route::post('/register', [RegisteredUserController::class, 'store'])
+    Route::post('/register', [AuthController::class, 'storeStep1'])
         ->middleware('throttle:' . config('fortify.limiters.register'))
         ->name('register.post');
 
     // 2. 初期目標体重登録画面 Step 2 (/register/step2)
     Route::get('/register/step2', [AuthController::class, 'createStep2'])->name('register.step2');
-    Route::post('/register/step2', [AuthController::class, 'storeStep2'])->name('register.step2.store');
+    Route::post('/register/step2/complete', [AuthController::class, 'storeStep2'])->name('register.step2.store');
 
     // 3. ログイン画面 (GET /login)
     Route::get('/login', function () {
@@ -37,9 +37,11 @@ Route::middleware(['guest'])->group(function () {
     })->name('login');
 
     // FortifyのログインPOSTルート (POST /login)
-    Route::post('/login', function (LoginRequest $request) {
-        return app(AuthenticatedSessionController::class)->store($request);
-    })->name('login.post');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+        ->middleware(array_filter([
+            'throttle:' . config('fortify.limiters.login'),
+        ]))
+        ->name('login.post');
 });
 
 // ログイン後のルート (認証済みユーザー専用)
