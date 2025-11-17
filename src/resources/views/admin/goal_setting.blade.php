@@ -18,15 +18,13 @@ $currentGoal が渡されない場合は null となり、フォームの初期�
     </div>
     
     <!-- FN034-1: 更新ボタンは update_goal ルートを想定 -->
-    <form method="POST" action="{{ route('update_goal') }}" class="goal-setting-form">
+    <form method="POST" action="{{ route('update_goal') }}" class="goal-setting-form" novalidate >
         @csrf
         @method('PUT')
 
         <!-- FN031-1: 目標の体重 (入力必須) -->
         <div class="form-group">
-            <label for="goal_weight">目標の体重</label>
-            {{-- $currentGoal がコントローラーから渡されればその値を表示し、なければ空欄にする --}}
-            <input id="goal_weight" type="number" name="goal_weight" step="0.1" placeholder="例: 45.0" required value="{{ $currentGoal ?? '' }}">
+            <input id="goal_weight" type="text" name="goal_weight" step="0.1" placeholder="例: 45.0" required value="{{ $currentGoal ?? '' }}">
             <span class="unit">kg</span>
         </div>
 
