@@ -3,7 +3,7 @@
 /* -------------------------------------- */
 :root {
     --primary-color: #333; /* デフォルトテキスト色 */
-    --logo-color: #ff94eaee; /* 修正3: PiGLyロゴの色を見本画像に合わせたピンクに変更 */
+    --logo-color: #f975deee; /* 修正3: PiGLyロゴの色を見本画像に合わせたピンクに変更 */
     --button-gradient: linear-gradient(135deg, #FFB6C1 0%, #FFD1DC 100%); /* 修正2: ボタンのグラデーション色 */
     --button-hover-gradient: linear-gradient(135deg, #FFC0CB 0%, #FFE0E6 100%);
     --link-color: #42a4d9;
