@@ -2,47 +2,44 @@
 
 namespace App\Http\Controllers;
 
-// 必須インポート
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-// 親クラスのインポート
-use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Contracts\LogoutResponse; // FortifyのLogoutResponseコントラクト
 
-class LogoutRedirectController extends AuthenticatedSessionController
+class LogoutRedirectController extends Controller
 {
-    // 注意: 親クラスの依存関係を使用しないため、
-    // コンストラクタ (__construct) の定義を削除し、IDEの継承エラーを回避します。
-    // 親クラスの依存関係はLaravelのIoCコンテナが解決します。
+    /**
+     * @var \Laravel\Fortify\Contracts\LogoutResponse
+     */
+    protected $logoutResponse;
+
+    /**
+     * LogoutResponseコントラクトを注入します。
+     * LaravelのIoCコンテナが自動で解決します。
+     *
+     * @param  \Laravel\Fortify\Contracts\LogoutResponse  $logoutResponse
+     * @return void
+     */
+    public function __construct(LogoutResponse $logoutResponse)
+    {
+        $this->logoutResponse = $logoutResponse;
+    }
 
     /**
      * ログアウト処理を実行し、カスタムリダイレクトに移行します。
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request)
     {
-        // 1. 認証ガードからのログアウト処理を実行
+        // Fortifyの標準ログアウト処理
         Auth::guard(config('fortify.guard'))->logout();
-
-        // 2. セッションの再生成とトークンの無効化
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // 3. カスタムリダイレクトメソッド (loggedOut) を呼び出す
-        return $this->loggedOut($request);
-    }
-
-    /**
-     * ログアウト処理後に実行されるメソッドをオーバーライドし、ログアウト後のリダイレクト先を /login に強制する。
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    protected function loggedOut(Request $request): RedirectResponse
-    {
-        // ログアウト処理完了後、ログイン画面へリダイレクト
+        // ここでFortifyのLogoutResponseの代わりに、カスタムのRedirectResponseを返す
         return redirect()->route('login');
     }
 }

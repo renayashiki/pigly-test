@@ -18,7 +18,8 @@
         <div class="form-group">
             <label for="current_weight">現在の体重</label>
             <div class="weight-input-group">
-                <input id="current_weight" type="text" name="current_weight" step="0.1" value="{{ old('current_weight') }}" required>
+                {{-- required 属性を削除 --}}
+                <input id="current_weight" type="text" name="current_weight" step="0.1" value="{{ old('current_weight') }}"> 
                 <span>kg</span>
             </div>
             @error('current_weight')
@@ -29,7 +30,8 @@
         <div class="form-group">
             <label for="target_weight">目標の体重</label>
             <div class="weight-input-group">
-                <input id="target_weight" type="text" name="target_weight" step="0.1" value="{{ old('target_weight') }}" required>
+                {{-- required 属性を削除 --}}
+                <input id="target_weight" type="text" name="target_weight" step="0.1" value="{{ old('target_weight') }}"> 
                 <span>kg</span>
             </div>
             @error('target_weight')

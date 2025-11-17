@@ -38,7 +38,6 @@ class RegisterStep1Request extends FormRequest
         return [
             // 1. お名前
             'name.required' => 'お名前を入力してください',
-
             // 2. メールアドレス
             'email.required' => 'メールアドレスを入力してください',
             'email.email' => 'メールアドレスは「ユーザー名@ドメイン」形式で入力してください',

@@ -27,12 +27,14 @@ class RegisterStep2Request extends FormRequest
             'current_weight' => [
                 'required',
                 'numeric',
-                'regex:/^\d{1,3}(\.\d{1})?$/',
+                'max:999.9',
+                'regex:/^\d+(\.\d{1})?$/',
             ],
             'target_weight' => [
                 'required',
                 'numeric',
-                'regex:/^\d{1,3}(\.\d{1})?$/',
+                'max:999.9',
+                'regex:/^\d+(\.\d{1})?$/',
             ],
         ];
     }
