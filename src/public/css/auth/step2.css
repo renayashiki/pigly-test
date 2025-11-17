@@ -1,30 +1,24 @@
-/* Step 2: 初期体重の入力 (FN007) */
-/* 体重入力の固有レイアウトを定義 */
+/* -------------------------------------- */
+/* 会員登録 Step2 固有スタイル (step2.css) */
+/* -------------------------------------- */
 
-/* STEP2サブタイトルの下のマージン */
-.form-container .subtitle:last-of-type {
-    margin-bottom: 25px;
-}
-
-/* 体重入力欄のレイアウト調整 */
 .weight-input-group {
     display: flex;
     align-items: center;
+    gap: 10px; /* 入力欄と単位の間のスペース */
 }
 
-.weight-input-group input {
-    /* app.cssでw-fullになっているが、flex-growで調整 */
-    flex-grow: 1; 
-    text-align: right; /* 体重値を右寄せ */
+.weight-input-group input[type="number"] {
+    /* 共通CSSの幅を活かしつつ、単位と横並びにする */
+    flex: 1;
+    text-align: right; 
+    padding-right: 5px; 
+    max-width: none; 
 }
 
 .weight-input-group span {
-    margin-left: 10px;
-    font-size: 1rem;
-    color: var(--color-text-main);
-}
-
-/* アカウント作成ボタンの上のマージン */
-.form-container .btn-primary {
-    margin-top: 30px; /* FN010: 画像のデザインに合わせて少し大きめのマージン */
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-color);
+    line-height: 1.2; 
 }

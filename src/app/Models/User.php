@@ -45,7 +45,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
         'current_weight' => 'decimal:1', // 小数点1桁にキャスト
         'target_weight' => 'decimal:1', // 小数点1桁にキャスト
         'is_admin' => 'boolean', // booleanにキャスト

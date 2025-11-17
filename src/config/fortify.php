@@ -144,6 +144,12 @@ return [
     |
     */
 
+    'routes' => [
+        'login' => true,
+        'logout' => false, // ★ カスタムログアウト (LogoutRedirectController) を優先するため無効化
+        'register' => true,
+    ],
+
     'features' => [
         Features::registration(),
         Features::resetPasswords(),

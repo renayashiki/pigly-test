@@ -1,0 +1,92 @@
+/* -------------------------------------- */
+/* ④ 目標体重設定画面 (goal_setting) 専用スタイル */
+/* -------------------------------------- */
+:root {
+    --primary-color: #795548;
+    --accent-color: #F8BBD0;
+    --border-color: #E0E0E0;
+    --negative-color: #F44336;
+}
+
+.goal-setting-container {
+    padding: 30px;
+    max-width: 500px;
+    margin: 30px auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.form-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--primary-color);
+}
+
+/* --- フォーム共通設定 --- */
+.goal-setting-form .form-group {
+    margin-bottom: 20px;
+    position: relative;
+    padding-right: 40px; 
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.goal-setting-form .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.goal-setting-form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    flex-grow: 1;
+}
+
+.goal-setting-form .unit {
+    position: absolute;
+    right: 10px;
+    top: 45px;
+    color: #999;
+    font-size: 14px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 30px;
+}
+
+/* バリデーションエラー */
+.validation-error {
+    color: var(--negative-color);
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+/* ボタン色 */
+.btn-primary {
+    background-color: var(--accent-color);
+    color: white;
+}
+.btn-secondary {
+    background-color: #E0E0E0;
+    color: #333;
+}

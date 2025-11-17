@@ -1,17 +1,13 @@
-/* Step 1: アカウント情報の登録 (FN001) */
-/* 共通スタイルで大部分はカバーされるが、固有の配置マージンを調整 */
+/* -------------------------------------- */
+/* 会員登録 Step1 固有スタイル (step1.css) */
+/* -------------------------------------- */
 
-/* STEP1サブタイトルの下のマージン */
-.form-container .subtitle:last-of-type {
-    margin-bottom: 25px;
-}
-
-/* 次に進むボタンの上のマージン */
+/* 次に進むボタンの上のマージン (FN005) */
 .form-container .btn-primary {
-    margin-top: 15px; /* FN005 */
+    margin-top: 15px;
 }
 
-/* ログインはこちらリンクの上のマージン */
+/* ログインはこちらリンクの上のマージン (FN006-1) */
 .form-container .sub-link {
-    margin-top: 15px; /* FN006-1 */
+    margin-top: 15px;
 }

@@ -1,0 +1,83 @@
+/* -------------------------------------- */
+/* ① ヘッダー部分のみの共通CSS */
+/* -------------------------------------- */
+:root {
+    --primary-color: #795548; /* ブラウン系 */
+    --text-color: #333;
+    --border-color: #E0E0E0;
+    --hover-bg: #F5F5F5;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* --- 共通ヘッダー (FN029-4, 5) --- */
+.admin-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.header-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* ボタンのベーススタイル */
+.btn-primary, .btn-secondary, .btn-goal-setting, .logout-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s, color 0.2s;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.btn-goal-setting {
+    background-color: var(--hover-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.btn-goal-setting:hover {
+    background-color: #E0E0E0;
+}
+
+.logout-button {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid transparent;
+}
+
+.logout-button:hover {
+    color: var(--primary-color);
+}
+
+.inline-form {
+    display: inline;
+}
+
+.admin-content {
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
