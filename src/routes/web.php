@@ -8,7 +8,12 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 // カスタムコントローラー
 use App\Http\Controllers\LogoutRedirectController;
-use App\Http\Controllers\WeightLogController; // ★ WeightLogController を使用
+use App\Http\Controllers\WeightLogController;
+use App\Http\Requests\LoginRequest;
+use Laravel\Fortify\Fortify;
+
+
+Fortify::ignoreRoutes();
 
 // ゲストユーザー向けのルート (認証不要)
 Route::middleware(['guest'])->group(function () {
@@ -32,11 +37,9 @@ Route::middleware(['guest'])->group(function () {
     })->name('login');
 
     // FortifyのログインPOSTルート (POST /login)
-    Route::post('/login', [AuthenticatedSessionController::class, 'store'])
-        ->middleware(array_filter([
-            'throttle:' . config('fortify.limiters.login'),
-        ]))
-        ->name('login.post');
+    Route::post('/login', function (LoginRequest $request) {
+        return app(AuthenticatedSessionController::class)->store($request);
+    })->name('login.post');
 });
 
 // ログイン後のルート (認証済みユーザー専用)

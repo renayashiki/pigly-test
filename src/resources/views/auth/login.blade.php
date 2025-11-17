@@ -12,17 +12,8 @@
     <div class="subtitle">ログイン</div>
 
 
-    <form method="POST" action="{{ route('login') }}" class="auth-form">
+    <form method="POST" action="{{ route('login') }}" class="auth-form" novalidate>
         @csrf
-
-        @if ($errors->has(config('fortify.username')))
-            <div class="form-group" style="text-align: center;">
-                <span class="validation-error" role="alert" style="margin-bottom: 10px;">
-                    {{ $errors->first(config('fortify.username')) }}
-                </span>
-            </div>
-        @endif
-
         <div class="form-group">
             <label for="email">メールアドレス</label>
             <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username">

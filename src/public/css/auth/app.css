@@ -3,10 +3,10 @@
 /* -------------------------------------- */
 :root {
     --primary-color: #333; /* デフォルトテキスト色 */
-    --logo-color: #FF69B4; /* 修正3: PiGLyロゴの色を見本画像に合わせたピンクに変更 */
+    --logo-color: #ff94eaee; /* 修正3: PiGLyロゴの色を見本画像に合わせたピンクに変更 */
     --button-gradient: linear-gradient(135deg, #FFB6C1 0%, #FFD1DC 100%); /* 修正2: ボタンのグラデーション色 */
     --button-hover-gradient: linear-gradient(135deg, #FFC0CB 0%, #FFE0E6 100%);
-    --link-color: #4CAF50; /* リンク色（緑系） */
+    --link-color: #42a4d9;
     --text-color: #333;
     --border-color: #E0E0E0;
     --negative-color: #F44336; /* バリデーションエラー色 (赤) */
@@ -50,16 +50,20 @@ body {
 }
 
 .logo {
-    font-size: 32px;
-    font-weight: bold;
+    font-size: 50px;
+    /* font-weight: lighter; */
     color: var(--logo-color); /* 修正3: PiGLyロゴの色をピンクに変更 */
-    font-family: 'Arial', sans-serif; /* 修正3: フォントを見本に寄せる */
+    font-family: "EB Garamond", serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
     margin-bottom: 5px;
 }
 
 .subtitle {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 20px;
+    font-weight: normal;
+    font-family: Georgia, 'Times New Roman', Times, serif;
     color: var(--text-color);
     margin-bottom: 5px;
 }
@@ -78,7 +82,9 @@ body {
 }
 
 .form-group {
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column; /* 縦並び固定 */
+    margin-bottom: 1rem;
 }
 
 .form-group label {
