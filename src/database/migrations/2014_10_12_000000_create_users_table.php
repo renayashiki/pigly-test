@@ -20,6 +20,12 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            // --- カスタム追加カラム ---
+            $table->decimal('current_weight', 4, 1)->nullable()->comment('現在の体重');
+            $table->decimal('target_weight', 4, 1)->nullable()->comment('目標体重');
+            $table->boolean('is_admin')->default(false)->comment('管理者フラグ');
+            // -------------------------
+
             $table->timestamps();
         });
     }

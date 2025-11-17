@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
-// AuthControllerとして、多段階認証に関連するカスタム処理を一元管理します。
 class AuthController extends Controller
 {
     /**
@@ -35,20 +35,21 @@ class AuthController extends Controller
         $input = $request->all();
 
         try {
-            // Fortifyの登録処理を実行 (CreateNewUser::create()がStep 2として呼ばれる)
+            // Fortifyの登録処理を実行 (CreateNewUser::create()が呼ばれる)
+            // この中でユーザーがDBに登録され、自動的にログインされる
             $user = $creator->create($input);
 
-            // 登録成功後、Fortifyが自動的にログインし、HOMEへリダイレクトする (/weight-managementを想定)
+            // 登録成功後、RouteServiceProvider::HOME (現在 /weight-logs) へリダイレクト
             return redirect()->intended(config('fortify.home'));
         } catch (ValidationException $e) {
-            // バリデーションエラーをセッションに保存してStep 2に戻る
+            // バリデーションエラー
             return redirect()->route('register.step2')
                 ->withInput()
                 ->withErrors($e->errors());
         } catch (\Exception $e) {
-            // その他のエラー処理
-            error_log('User registration error: ' . $e->getMessage());
-            return redirect()->route('register.step2')->withInput()->withErrors(['general' => 'ユーザー登録中にエラーが発生しました。']);
+            // その他のエラー
+            Log::error('User registration error in AuthController: ' . $e->getMessage());
+            return redirect()->route('register.step2')->withInput()->withErrors(['general' => 'ユーザー登録中に予期せぬエラーが発生しました。']);
         }
     }
 }

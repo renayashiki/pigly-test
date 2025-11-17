@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'current_weight',
+        'target_weight',
+        'is_admin',
     ];
 
     /**
@@ -31,6 +34,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
     /**
@@ -40,5 +45,9 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'current_weight' => 'decimal:1', // 小数点1桁にキャスト
+        'target_weight' => 'decimal:1', // 小数点1桁にキャスト
+        'is_admin' => 'boolean', // booleanにキャスト
     ];
 }
