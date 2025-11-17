@@ -1,0 +1,30 @@
+/* Step 2: 初期体重の入力 (FN007) */
+/* 体重入力の固有レイアウトを定義 */
+
+/* STEP2サブタイトルの下のマージン */
+.form-container .subtitle:last-of-type {
+    margin-bottom: 25px;
+}
+
+/* 体重入力欄のレイアウト調整 */
+.weight-input-group {
+    display: flex;
+    align-items: center;
+}
+
+.weight-input-group input {
+    /* app.cssでw-fullになっているが、flex-growで調整 */
+    flex-grow: 1; 
+    text-align: right; /* 体重値を右寄せ */
+}
+
+.weight-input-group span {
+    margin-left: 10px;
+    font-size: 1rem;
+    color: var(--color-text-main);
+}
+
+/* アカウント作成ボタンの上のマージン */
+.form-container .btn-primary {
+    margin-top: 30px; /* FN010: 画像のデザインに合わせて少し大きめのマージン */
+}

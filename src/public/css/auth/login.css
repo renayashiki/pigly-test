@@ -1,0 +1,18 @@
+/* サブタイトルの下のマージン */
+.form-container .subtitle:last-of-type {
+    margin-bottom: 25px;
+}
+
+/* 認証エラーメッセージの表示位置 (FN014-3a) */
+/* Fortifyのデフォルト認証エラーは通常、メールアドレスのエラーとして表示される */
+/* このCSSは認証エラーメッセージの表示位置を調整するためのもので、blade側で制御 */
+
+/* ログインボタンの上のマージン */
+.form-container .btn-primary {
+    margin-top: 15px; /* FN015-1 */
+}
+
+/* アカウント作成はこちらリンクの上のマージン */
+.form-container .sub-link {
+    margin-top: 15px; /* FN015-2 */
+}

@@ -1,0 +1,124 @@
+@import url('/css/sanitize.css'); /* パスをルートからの相対パスに変更 */
+
+/* -------------------------------------------
+ * 共通デザイン (画像忠実再現)
+ * ------------------------------------------- */
+:root {
+    --color-primary: #af7cff; /* PiGLyロゴ、ボタンのベース色 (画像に合わせた紫がかったピンク) */
+    --color-error: #ff0000; /* バリデーションエラーの赤 (FN003-2) */
+    --color-text-sub: #777;
+    --color-text-main: #333;
+    /* 画像のグラデーション背景色 (薄いピンクから紫) */
+    --color-bg-start: #ffc0cb; 
+    --color-bg-end: #dda0dd;   
+    --card-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+body {
+    /* 画像のフォントに近づけるため、デフォルトのサンセリフ系を使用 */
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+    background: linear-gradient(135deg, var(--color-bg-start), var(--color-bg-end));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+/* フォームコンテナ (白カード) */
+.form-container {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    width: 100%;
+    max-width: 350px; /* 画像の幅に合わせて調整 */
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* ロゴ */
+.logo {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 5px;
+}
+
+/* サブタイトル/ステップ */
+.subtitle {
+    font-size: 0.9rem;
+    color: var(--color-text-sub);
+    margin-bottom: 5px;
+}
+
+/* フォームグループ */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--color-text-sub);
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="number"] {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    border-color: var(--color-primary);
+    outline: none;
+}
+
+/* エラーメッセージ */
+.validation-error {
+    color: var(--color-error); /* 赤色 */
+    font-size: 0.75rem;
+    margin-top: 5px;
+    display: block;
+}
+
+/* プライマリボタン (次に進む, ログイン, アカウント作成) */
+.btn-primary {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1rem;
+}
+
+.btn-primary:hover {
+    background-color: #925ceb;
+}
+
+/* サブリンク/ボタン (ログインはこちら, アカウント作成はこちら) */
+.sub-link {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--color-text-sub);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.sub-link:hover {
+    color: var(--color-primary);
+}
