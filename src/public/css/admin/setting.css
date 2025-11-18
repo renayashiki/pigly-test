@@ -107,3 +107,15 @@
     flex: 1;
     padding: 12px 0;
 }
+
+.validation-error-message {
+    color: #e3342f;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    text-align: left;
+    padding-left: 0;
+}
+
+.goal-setting-container .goal-setting-form .form-group input.is-invalid {
+    border-color: #e3342f !important;
+}

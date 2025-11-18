@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GoalSettingRequest;
+use App\Models\WeightTarget;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+
 
 class WeightLogController extends Controller
 {
@@ -35,10 +40,25 @@ class WeightLogController extends Controller
     /**
      * FN034-1: 目標体重の更新処理
      */
-    public function updateGoal(Request $request)
+    public function updateGoal(GoalSettingRequest $request)
     {
-        // FN032, FN033: FormRequestバリデーションとDB更新処理を想定
-        return redirect()->route('weight-logs')->with('status', '目標体重を更新しました。');
+        // $request 変数を使用するため、「薄くなる」警告は解消
+        $validatedData = $request->validated(); // 自動バリデーション後のデータを取得
+
+        try {
+            // updateOrCreate: user_idが一致するレコードがあれば更新、なければ新規作成
+            WeightTarget::updateOrCreate(
+                ['user_id' => Auth::id()], // 検索条件
+                ['target_weight' => $validatedData['target_weight']] // 更新データ (モデルの $fillable と一致)
+            );
+
+            // 成功メッセージとともにリダイレクト
+            return redirect()->route('weight-logs')->with('success', '目標体重を更新しました。');
+        } catch (\Exception $e) {
+            Log::error('目標体重の保存エラー: ' . $e->getMessage());
+            // エラーが発生した場合、設定画面に戻し、エラーメッセージを表示
+            return redirect()->back()->withErrors(['target_weight' => '目標体重の保存中にエラーが発生しました。時間をおいて再度お試しください。']);
+        }
     }
 
     /**

@@ -24,14 +24,29 @@ $currentGoal が渡されない場合は null となり、フォームの初期�
 
         <!-- FN031-1: 目標の体重 (入力必須) -->
         <div class="form-group">
-            <input id="goal_weight" type="text" name="goal_weight" step="0.1" placeholder="例: 45.0" required value="{{ $currentGoal ?? '' }}">
+            <input
+                id="goal_weight"
+                type="text"
+                name="target_weight"
+                step="0.1"
+                placeholder="例: 45.0"
+                required
+                class="@error('target_weight') is-invalid @enderror"
+                value="{{ old('target_weight', $currentGoal ?? '') }}"
+            >
             <span class="unit">kg</span>
+
+            @error('target_weight')
+                <div class="validation-error-message">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
 
         <div class="form-actions">
-            <!-- FN034-2: 戻るボタン -->
+            <!--戻るボタン -->
             <button type="button" class="btn-secondary" onclick="window.location='{{ route('weight-logs') }}'">戻る</button>
-            <!-- FN034-1: 更新ボタン -->
+            <!--更新ボタン -->
             <button type="submit" class="btn-primary">更新</button>
         </div>
     </form>
