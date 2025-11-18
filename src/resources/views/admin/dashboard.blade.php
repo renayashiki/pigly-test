@@ -182,7 +182,7 @@
     <div id="register-modal" class="modal-overlay @if($errors->any()) visible @else hidden @endif">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Weight Log 登録</h2>
+                <h2>Weight Logを追加</h2>
             </div>
             
             <form method="POST" action="{{ route('store_log') }}" class="modal-form">
@@ -198,7 +198,7 @@
                 {{-- 体重 (FN025-2) --}}
                 <div class="form-group">
                     <label for="reg_weight">体重</label>
-                    <input id="reg_weight" type="number" name="weight" step="0.1" placeholder="例: 45.0" required value="{{ old('weight') }}">
+                    <input id="reg_weight" type="text" name="weight" step="0.1" placeholder="例: 45.0" required value="{{ old('weight') }}">
                     <span class="unit">kg</span>
                     @error('weight')<span class="error-message">{{ $message }}</span>@enderror {{-- FN027-2 --}}
                 </div>
@@ -206,7 +206,7 @@
                 {{-- 食事摂取カロリー (FN025-3) --}}
                 <div class="form-group">
                     <label for="reg_calories">食事摂取カロリー</label>
-                    <input id="reg_calories" type="number" name="calories" required value="{{ old('calories') }}">
+                    <input id="reg_calories" type="text" name="calories" required value="{{ old('calories') }}">
                     <span class="unit">cal</span>
                     @error('calories')<span class="error-message">{{ $message }}</span>@enderror {{-- FN027-3 --}}
                 </div>

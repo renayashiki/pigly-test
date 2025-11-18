@@ -16,7 +16,8 @@
         @csrf
         <div class="form-group">
             <label for="email">メールアドレス</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username">
+            {{-- ここにプレースホルダーを追加 --}}
+            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username" placeholder="メールアドレスを入力">
             @error('email')
                 <span class="validation-error">{{ $message }}</span>
             @enderror
@@ -24,13 +25,14 @@
 
         <div class="form-group">
             <label for="password">パスワード</label>
-            <input id="password" type="password" name="password" required autocomplete="current-password">
+            {{-- ここにプレースホルダーを追加 --}}
+            <input id="password" type="password" name="password" required autocomplete="current-password" placeholder="パスワードを入力">
             @error('password')
                 <span class="validation-error">{{ $message }}</span>
             @enderror
         </div>
 
-        <button type="submit" class="btn-primary">ログインする</button>
+        <button type="submit" class="btn-primary">ログイン</button>
     </form>
 
     <a href="{{ route('register.step1') }}" class="sub-link">アカウント作成はこちら</a>

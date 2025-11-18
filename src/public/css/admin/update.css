@@ -1,12 +1,12 @@
-/* -------------------------------------- */
-/* ③ 情報更新画面 (update_log) 専用スタイル */
-/* -------------------------------------- */
 :root {
     --primary-color: #795548;
     --secondary-color: #8D6E63;
-    --accent-color: #F8BBD0;
+    --accent-color: #F8BBD0; /* ピンク系 (グラデーション開始色) */
+    --purple-color: #CE93D8; /* グラデーション用紫系 (グラデーション終了色) */
+    --gradient-main: linear-gradient(45deg, var(--accent-color), var(--purple-color)); /* ピンクと紫のグラデーション */
     --border-color: #E0E0E0;
-    --negative-color: #F44336;
+    --negative-color: #F44336; /* 赤 */
+    --button-width: 100px; /* 見本に合わせたボタン幅に統一 */
 }
 
 .log-form-container {
@@ -22,7 +22,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: none; 
     padding-bottom: 15px;
     margin-bottom: 20px;
 }
@@ -33,39 +33,17 @@
     color: var(--primary-color);
 }
 
-/* --- ゴミ箱ボタン (FN028) --- */
-.delete-form {
-    margin: 0;
-    display: inline-block;
-}
-
-.btn-icon-delete {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    transition: transform 0.2s;
-}
-
-.icon-trash {
-    width: 22px;
-    height: 22px;
-    color: var(--secondary-color);
-}
-
-.btn-icon-delete:hover .icon-trash {
-    color: var(--negative-color);
-    transform: scale(1.1);
-}
-
 /* --- フォーム共通設定 --- */
 .log-update-form .form-group {
     margin-bottom: 20px;
     position: relative;
+    padding-right: 0; 
+}
+
+/* 修正②: 単位を持つフォームグループのパディングを追加 */
+.log-update-form .form-group.unit-group {
+    /* 単位 (kg/cal) を入力欄の右外に出すため、フォーム全体に右側のスペースを空ける */
     padding-right: 40px; 
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
 }
 
 .log-update-form .form-group label {
@@ -86,37 +64,171 @@
     flex-grow: 1;
 }
 
-.log-update-form .unit {
+/* 修正②: 単位 (kg/cal) を入力欄の外、右側に配置 */
+.log-update-form .unit-group .unit {
     position: absolute;
-    right: 10px;
-    top: 45px; 
-    color: #999;
-    font-size: 14px;
+    /* .unit-group の右パディング内、右端に配置 */
+    right: 0; 
+    top: 40px; 
+    color: #333; 
+    font-size: 16px; 
+    line-height: 2; 
+    pointer-events: none;
+    font-weight: normal;
 }
 
+
+/* -------------------------------------- */
+/* 修正①: ボタンエリア (form-actions) の配置とデザイン */
+/* -------------------------------------- */
 .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
+    border-top: none; 
     padding-top: 20px;
-    border-top: 1px solid var(--border-color);
     margin-top: 30px;
+    
+    /* 戻る・登録ボタン（中央コンテナ）とゴミ箱ボタン（右端）を配置 */
+    display: flex;
+    /* 両端揃えにして、ゴミ箱を右に、中央ボタンを中央に配置する */
+    justify-content: space-between; 
+    align-items: center;
 }
 
-/* バリデーションエラー */
-.validation-error {
-    color: var(--negative-color);
-    font-size: 12px;
-    margin-top: 5px;
-    display: block;
+/* 修正①: 戻る・登録ボタンを中央に配置するためのコンテナ */
+.center-buttons {
+    /* flexコンテナ内で左右のマージンをautoにすることで、コンテナ全体を中央に寄せる */
+    margin-left: auto; 
+    margin-right: auto;
+    display: flex;
+    gap: 10px; /* 戻る・登録ボタン間の隙間 */
 }
 
-/* ボタン色 */
+/* --- ゴミ箱ボタンのデザイン --- */
+.btn-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.2s;
+    line-height: 1; 
+    
+    /* 右端に配置されるため、margin-left: auto; は不要。flex-endの反対側の要素として配置される */
+    width: 30px; 
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ゴミ箱の左右にスペースがない場合に備えて調整 */
+.btn-delete:first-child {
+    /* 構造上、ゴミ箱は一番最後の要素になるため不要だが念のため */
+    margin-right: 0;
+}
+
+.icon-trash-custom {
+    width: 24px;
+    height: 24px;
+    color: var(--negative-color); 
+    transition: color 0.2s;
+}
+
+.btn-delete:hover .icon-trash-custom {
+    opacity: 0.8;
+}
+
+
+/* 戻る・登録ボタンのスタイル */
+.btn-primary, .btn-secondary {
+    width: var(--button-width); 
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.2s; 
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* 登録ボタン (グラデーション) */
 .btn-primary {
-    background-color: var(--accent-color);
+    background-image: var(--gradient-main);
+    background-color: transparent;
     color: white;
 }
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+/* 戻るボタン (グレー) */
 .btn-secondary {
     background-color: #E0E0E0;
     color: #333;
+}
+.btn-secondary:hover {
+    opacity: 0.8;
+}
+
+/* -------------------------------------- */
+/* カスタム削除確認モーダル用スタイル */
+/* -------------------------------------- */
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.custom-modal-overlay.hidden {
+    display: none;
+}
+
+.custom-modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 350px;
+    text-align: center;
+}
+
+.custom-modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--negative-color);
+}
+
+.custom-modal-body {
+    padding: 15px 0;
+    font-size: 16px;
+}
+
+.custom-modal-actions {
+    display: flex;
+    justify-content: center; 
+    gap: 10px;
+    padding-top: 10px;
+}
+
+.btn-primary-delete {
+    width: var(--button-width); 
+    padding: 10px 20px;
+    background-color: var(--negative-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+.btn-primary-delete:hover {
+    opacity: 0.9;
 }

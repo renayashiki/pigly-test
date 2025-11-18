@@ -12,6 +12,12 @@
     --hover-bg: #F5F5F5;
     --positive-color: #4CAF50; /* 緑 */
     --negative-color: #F44336; /* 赤 */
+    
+    /* モーダルフォームの最大幅を定義 (ボタンを広げるために調整) */
+    --modal-form-max-width: 440px; 
+    
+    /* 修正1: 必須マーク用の赤色 */
+    --required-bg: #F44336; 
 }
 
 .dashboard-container {
@@ -20,7 +26,7 @@
     margin: 0 auto;
 }
 
-/* --- Summary Area (FN016-6, 7, 8) --- */
+/* --- Summary Area --- (省略) */
 .summary-area {
     display: flex;
     justify-content: space-between;
@@ -57,7 +63,7 @@
     color: var(--positive-color); 
 }
 
-/* --- Action Bar & Inline Search Form (FN017, FN018-3) --- */
+/* --- Action Bar & Inline Search Form --- (省略) */
 .action-bar {
     display: flex;
     justify-content: flex-start; 
@@ -121,7 +127,7 @@
     border-radius: 5px;
 }
 
-/* --- Log Table (FN016) --- */
+/* --- Log Table --- (省略) */
 .log-table-container {
     background-color: white;
     border-radius: 8px;
@@ -149,7 +155,7 @@
     text-align: left;
 }
 
-/* FN016-hove: テーブル行のホバー機能 */
+/* テーブル行のホバー機能 */
 .log-table tbody tr.log-item:hover {
     background-color: var(--hover-bg);
     cursor: default;
@@ -162,7 +168,7 @@
 .time-col { width: 20%; }
 .action-col { width: 10%; text-align: center; }
 
-/* --- ページネーション (FN016) --- */
+/* --- ページネーション --- (省略) */
 .pagination-area {
     display: flex;
     justify-content: center; 
@@ -188,7 +194,6 @@
     transition: background-color 0.2s, color 0.2s, background-image 0.2s;
     min-width: 38px;
     text-align: center;
-    /* ページネーションの背景白を削除 */
     background-color: transparent;
 }
 
@@ -207,17 +212,16 @@
     color: white; 
 }
 
-/* 無効化されたリンク（最初/最後など）のスタイル */
+/* 無効化されたリンクのスタイル */
 .page-link.disabled {
     pointer-events: none;
     opacity: 0.5;
-    /* ページネーションの背景白を削除 */
     background-color: transparent; 
     border: none;
     color: #999;
 }
 
-/* --- 修正1: えんぴつボタン (グラデーションの塗りつぶしを単色に近い色で代替し、確実な表示を優先) --- */
+/* 鉛筆ボタン (省略) */
 .btn-icon {
     display: inline-flex;
     align-items: center;
@@ -232,7 +236,6 @@
 .icon-pencil {
     width: 18px;
     height: 18px;
-    /* グラデーション適用が原因でアイコンが消える問題を回避するため、テーマカラーの一つ（紫寄り）で確実に表示させる */
     color: var(--purple-color);
     background-image: none;
     -webkit-background-clip: unset;
@@ -247,7 +250,7 @@
 
 
 /* -------------------------------------- */
-/* FN019, FN017: モーダルウィンドウ共通スタイル */
+/* モーダルウィンドウ共通スタイル */
 /* -------------------------------------- */
 .modal-overlay {
     position: fixed;
@@ -272,11 +275,12 @@
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     width: 90%;
-    max-width: 500px;
+    max-width: var(--modal-form-max-width); 
 }
 
+/* モーダルヘッダーとアクションの区切り線を完全に削除 */
 .modal-header {
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: none; 
     padding-bottom: 15px;
     margin-bottom: 20px;
 }
@@ -289,28 +293,49 @@
 
 .modal-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center; 
     gap: 10px;
     padding-top: 20px;
-    border-top: 1px solid var(--border-color);
+    border-top: none;
 }
 
 /* --- フォーム共通 --- */
 .modal-form .form-group {
     margin-bottom: 20px;
     position: relative;
+    /* 単位の表示のためパディングを確保 */
     padding-right: 40px; 
 }
 
+/* !!! 最終修正: ラベル内のテキストと必須マークの配置調整 !!! */
 .modal-form .form-group label {
-    display: block;
+    display: flex; /* Flexboxを使ってテキストと::afterを横並びにする */
+    align-items: center; /* 垂直方向の中央揃え */
     font-weight: bold;
     margin-bottom: 5px;
     width: 100%;
+    /* ラベル自体の幅は100%を維持し、文字が途切れるのを防ぐ */
 }
 
+/* 必須マークのスタイル */
+.modal-form .form-group label::after {
+    content: "必須";
+    background-color: var(--required-bg); 
+    color: white; 
+    font-size: 10px; 
+    font-weight: bold;
+    padding: 3px 6px; 
+    border-radius: 3px; 
+    margin-left: 8px; /* テキストとの間にスペースを設ける */
+    display: inline-block; 
+    white-space: nowrap;
+    /* Flexアイテムとして機能させるため、widthなどは指定しない */
+    flex-shrink: 0; /* 必須マークが縮小しないようにする */
+}
+
+
+/* 共通の入力欄スタイル */
 .modal-form input[type="date"], 
-.modal-form input[type="number"], 
 .modal-form input[type="time"],
 .modal-form textarea {
     width: 100%;
@@ -320,17 +345,48 @@
     box-sizing: border-box;
     font-size: 16px;
     flex-grow: 1;
+    border: 1px solid var(--border-color);
 }
 
+/* 体重、摂取カロリー（type="text"に変更された想定）の入力欄調整 */
+.modal-form input[type="text"] {
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+
+    padding: 10px 5px;
+    
+    /* 単位と並べるための幅調整 */
+    width: calc(100% - 40px); 
+    float: left; 
+}
+
+/* 単位表示のスタイル */
 .modal-form .unit {
     position: absolute;
     right: 10px;
     top: 45px; 
     color: #999;
-    font-size: 14px;
+    font-size: 16px; 
+    line-height: 1.5; 
+    display: inline-block;
+    width: 30px; 
+    text-align: right;
 }
 
-/* バリデーションエラーの表示 */
+/* 運動内容のフォームグループ（単位がないと仮定）のパディングと幅の調整 */
+.modal-form .form-group.no-unit {
+    padding-right: 0;
+}
+.modal-form .form-group.no-unit textarea {
+    width: 100%;
+    padding-right: 10px;
+    clear: both; 
+}
+
+
+/* バリデーションエラーの表示 (省略) */
 .error-message { 
     color: var(--negative-color);
     font-size: 12px;
@@ -340,6 +396,8 @@
 
 /* モーダル内プライマリボタン: 常時グラデーション */
 .btn-primary {
+    width: 150px; 
+    padding: 10px 20px;
     background-image: var(--gradient-main);
     background-color: transparent;
     color: white;
@@ -347,15 +405,19 @@
     border-radius: 5px;
     cursor: pointer;
     transition: opacity 0.2s; 
+    font-weight: bold;
 }
 
 .btn-secondary {
+    width: 150px;
+    padding: 10px 20px;
     background-color: #E0E0E0;
     color: #333;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: opacity 0.2s;
+    font-weight: bold;
 }
 
 /* ホバーは透明度調整のみ */
@@ -366,8 +428,7 @@
     opacity: 0.8;
 }
 
-
-/* アラートメッセージ */
+/* アラートメッセージ (省略) */
 .alert {
     padding: 15px;
     margin-bottom: 20px;
