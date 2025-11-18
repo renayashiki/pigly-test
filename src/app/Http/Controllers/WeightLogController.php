@@ -7,9 +7,10 @@ use App\Models\WeightTarget;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use App\Http\Requests\WeightLogRequest;
+use App\Http\Requests\WeightLogRequest; // 更新処理でバリデーションを使用
 use App\Models\WeightLog;
-
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class WeightLogController extends Controller
 {
@@ -34,10 +35,11 @@ class WeightLogController extends Controller
 
         return view('admin.dashboard', compact('targetWeight', 'weightLogs'));
     }
+
     /**
      * FN023-1: 体重ログの登録処理 (モーダル内)
      */
-    public function store(WeightLogRequest $request)
+    public function store(WeightLogRequest $request): RedirectResponse
     {
         $validatedData = $request->validated();
         $userId = Auth::id();
@@ -64,7 +66,7 @@ class WeightLogController extends Controller
     /**
      * FN030: 目標体重設定画面の表示
      */
-    public function goalSetting()
+    public function goalSetting(): View
     {
         // 既存の目標体重を取得し、ビューに渡す
         $weightTarget = WeightTarget::where('user_id', Auth::id())->first();
@@ -76,7 +78,7 @@ class WeightLogController extends Controller
     /**
      * FN034-1: 目標体重の更新処理
      */
-    public function updateGoal(GoalSettingRequest $request)
+    public function updateGoal(GoalSettingRequest $request): RedirectResponse
     {
         $validatedData = $request->validated();
 
@@ -96,27 +98,92 @@ class WeightLogController extends Controller
 
     /**
      * FN024: 詳細(情報更新)画面の表示
+     *
+     * @param int $weightLogId URLから渡されたログID
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function edit($weightLogId)
     {
-        // FN024: 該当IDのログデータを取得するロジックをここに実装
-        return view('admin.update_log', compact('weightLogId'));
+        // 該当IDのログデータを取得するロジックを実装（FN024）
+        try {
+            // ログIDがユーザーのものか確認しつつ取得 (セキュリティ対策)
+            $logData = WeightLog::where('user_id', Auth::id())
+                ->findOrFail($weightLogId);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // ログが見つからない、または他のユーザーのIDだった場合
+            Log::warning('不正なログIDアクセスまたはログ未発見: UserID=' . Auth::id() . ', LogID=' . $weightLogId);
+            return redirect()->route('weight-logs')->with('error', '指定されたログが見つかりませんでした。');
+        }
+
+        // 取得したログデータ ($logData) とIDをViewに渡す
+        return view('admin.update_log', [
+            'weightLogId' => $weightLogId,
+            'logData' => $logData, // フォームの初期値として使用
+        ]);
     }
 
     /**
      * FN029-1: 情報更新処理
+     *
+     * @param WeightLogRequest $request バリデーション済みのリクエスト
+     * @param int $weightLogId 更新対象のログID
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $weightLogId)
+    public function update(WeightLogRequest $request, $weightLogId): RedirectResponse
     {
-        // TODO: ここに更新ロジックの実装が必要です
-        return redirect()->route('weight-logs')->with('success', '体重ログを更新しました。');
+        // WeightLogRequestを使用して、バリデーションとデータ取得を行う
+        $validatedData = $request->validated();
+
+        try {
+            // 該当ログを取得（ユーザーIDもチェックしてセキュリティを担保）
+            $log = WeightLog::where('user_id', Auth::id())
+                ->findOrFail($weightLogId);
+
+            // データの更新
+            $log->update([
+                'date' => $validatedData['date'],
+                'weight' => $validatedData['weight'],
+                'calories' => $validatedData['calories'],
+                'exercise_time' => $validatedData['exercise_time'],
+                'exercise_content' => $validatedData['exercise_content'] ?? null,
+            ]);
+
+            return redirect()->route('weight-logs')->with('success', '体重ログを更新しました。');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // ログが見つからない、または他のユーザーのIDだった場合
+            Log::warning('更新対象のログ未発見: UserID=' . Auth::id() . ', LogID=' . $weightLogId);
+            return redirect()->route('weight-logs')->with('error', '更新対象のログが見つかりませんでした。');
+        } catch (\Exception $e) {
+            Log::error('体重ログの更新エラー: ' . $e->getMessage());
+            // エラー時は、入力値を保持したまま更新画面に戻る
+            return redirect()->back()->withInput()->with('error', '体重ログの更新中にエラーが発生しました。');
+        }
     }
+
     /**
      * FN028: データ削除処理
+     *
+     * @param int $weightLogId 削除対象のログID
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($weightLogId)
+    public function destroy($weightLogId): RedirectResponse
     {
-        // FN028: 該当IDのログデータを削除する処理をここに実装
-        return redirect()->route('weight-logs')->with('status', '体重ログを削除しました。');
+        try {
+            // FN028: 該当IDのログデータを削除する処理を実装
+            $deletedCount = WeightLog::where('user_id', Auth::id())
+                ->where('id', $weightLogId)
+                ->delete();
+
+            if ($deletedCount > 0) {
+                return redirect()->route('weight-logs')->with('success', '体重ログを削除しました。');
+            } else {
+                // ログが見つからないか、他のユーザーのログだった場合
+                Log::warning('削除対象のログ未発見: UserID=' . Auth::id() . ', LogID=' . $weightLogId);
+                return redirect()->route('weight-logs')->with('error', '削除対象のログが見つかりませんでした。');
+            }
+        } catch (\Exception $e) {
+            Log::error('体重ログの削除エラー: ' . $e->getMessage());
+            return redirect()->route('weight-logs')->with('error', '体重ログの削除中にエラーが発生しました。');
+        }
     }
 }

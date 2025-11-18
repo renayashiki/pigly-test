@@ -8,16 +8,47 @@
 
 @section('content')
 @php
-    // --- ダミーデータ ---
-    // コントローラーから渡される想定
-    $weightLogId = $weightLogId ?? 1; 
-    $logData = [
-        'date' => '2023-11-18', 
-        'weight' => 45.0, 
-        'calories' => 1200, 
-        'exercise_time' => '00:15', 
-        'exercise_content' => '運動内容のテキストが入ります。最大120文字。',
+    // --- コントローラーからのデータ受け取りを前提とする ---
+    // $weightLogId: URLから渡されたログのID (Controllerで定義済み)
+    // $logData: データベースから取得した WeightLog モデルインスタンス (Controllerで定義済み)
+    
+    // 変数が未定義の場合のエラーを避けるための安全策
+    $weightLogId = $weightLogId ?? null;
+    $logData = $logData ?? (object)[
+        'date' => '', 
+        'weight' => '', 
+        'calories' => '', 
+        'exercise_time' => '', 
+        'exercise_content' => '',
     ];
+
+    // --- 修正点: 日付と時間の表示形式を明示的に指定 ---
+    // input type="date" は 'Y-m-d' (YYYY-MM-DD) 形式を要求
+    $formattedDate = '';
+    if ($logData->date) {
+        try {
+            // Carbon::parse()を使って確実にCarbonオブジェクトにする
+            $formattedDate = \Carbon\Carbon::parse($logData->date)->format('Y-m-d');
+        } catch (\Exception $e) {
+            $formattedDate = $logData->date;
+        }
+    }
+
+    // input type="time" は 'H:i' (HH:MM) 形式を要求
+    $formattedTime = '';
+    if ($logData->exercise_time) {
+        try {
+            // DBによっては time 型が 'H:i:s' で返されるため、'H:i' に変換
+            $formattedTime = \Carbon\Carbon::parse($logData->exercise_time)->format('H:i');
+        } catch (\Exception $e) {
+            $formattedTime = $logData->exercise_time;
+        }
+    }
+    
+    // 他のデータはそのまま
+    $weightValue = $logData->weight ?? '';
+    $caloriesValue = $logData->calories ?? '';
+    $exerciseContent = $logData->exercise_content ?? '';
 @endphp
 
 <div class="log-form-container">
@@ -31,29 +62,29 @@
 
         <div class="form-group">
             <label for="update_date">日付</label>
-            <input id="update_date" type="date" name="date" required value="{{ $logData['date'] }}">
+            <input id="update_date" type="date" name="date" required value="{{ $formattedDate }}">
         </div>
 
         <div class="form-group unit-group">
             <label for="update_weight">体重</label>
-            <input id="update_weight" type="text" name="weight" step="0.1" placeholder="例: 45.0" required value="{{ $logData['weight'] }}">
+            <input id="update_weight" type="text" name="weight" step="0.1" placeholder="例: 45.0" required value="{{ $weightValue }}">
             <span class="unit">kg</span>
         </div>
 
         <div class="form-group unit-group">
             <label for="update_calories">摂取カロリー</label>
-            <input id="update_calories" type="text" name="calories" required value="{{ $logData['calories'] }}">
+            <input id="update_calories" type="text" name="calories" required value="{{ $caloriesValue }}">
             <span class="unit">cal</span>
         </div>
 
         <div class="form-group">
             <label for="update_exercise_time">運動時間</label>
-            <input id="update_exercise_time" type="time" name="exercise_time" required value="{{ $logData['exercise_time'] }}">
+            <input id="update_exercise_time" type="time" name="exercise_time" required value="{{ $formattedTime }}">
         </div>
 
         <div class="form-group no-unit">
             <label for="update_exercise_content">運動内容</label>
-            <textarea id="update_exercise_content" name="exercise_content" maxlength="120" rows="3">{{ $logData['exercise_content'] }}</textarea>
+            <textarea id="update_exercise_content" name="exercise_content" maxlength="120" rows="3">{{ $exerciseContent }}</textarea>
         </div>
 
         <div class="form-actions">
@@ -113,3 +144,4 @@
         }
     });
 </script>
+@endsection
