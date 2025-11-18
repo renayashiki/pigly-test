@@ -7,6 +7,8 @@ use App\Models\WeightTarget;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Http\Requests\WeightLogRequest;
+use App\Models\WeightLog;
 
 
 class WeightLogController extends Controller
@@ -16,17 +18,47 @@ class WeightLogController extends Controller
      */
     public function index()
     {
-        // データの取得ロジック（FN016: ログ、目標体重、ページネーション）をここに実装
-        return view('admin.dashboard');
-    }
+        $userId = Auth::id();
 
+        // ユーザーの最新の目標体重を取得 (FN016-6)
+        $weightTarget = WeightTarget::where('user_id', $userId)->first();
+        $targetWeight = $weightTarget ? $weightTarget->target_weight : null;
+
+        // DBからログ一覧を取得（FN016, ページネーション含む）
+        // ページネーション：8件ごと (FN016 ページネーションの要件)
+        $weightLogsQuery = WeightLog::where('user_id', $userId)
+            ->orderBy('date', 'desc')
+            ->orderBy('id', 'desc');
+
+        $weightLogs = $weightLogsQuery->paginate(8);
+
+        return view('admin.dashboard', compact('targetWeight', 'weightLogs'));
+    }
     /**
      * FN023-1: 体重ログの登録処理 (モーダル内)
      */
-    public function store(Request $request)
+    public function store(WeightLogRequest $request)
     {
-        // FN021, FN022: FormRequestバリデーションとDB保存処理を想定
-        return redirect()->route('weight-logs')->with('status', '体重ログを登録しました。');
+        $validatedData = $request->validated();
+        $userId = Auth::id();
+
+        try {
+            // DB保存
+            WeightLog::create([
+                'user_id' => $userId,
+                'date' => $validatedData['date'],
+                'weight' => $validatedData['weight'],
+                'calories' => $validatedData['calories'],
+                'exercise_time' => $validatedData['exercise_time'],
+                'exercise_content' => $validatedData['exercise_content'] ?? null,
+            ]);
+
+            return redirect()->route('weight-logs')->with('success', '体重ログを登録しました。');
+        } catch (\Exception $e) {
+            Log::error('体重ログの登録エラー: ' . $e->getMessage());
+
+            return redirect()->route('weight-logs')->with('error', '体重ログの登録中にエラーが発生しました。再度お試しください。');
+        }
     }
 
     /**
@@ -34,7 +66,11 @@ class WeightLogController extends Controller
      */
     public function goalSetting()
     {
-        return view('admin.goal_setting');
+        // 既存の目標体重を取得し、ビューに渡す
+        $weightTarget = WeightTarget::where('user_id', Auth::id())->first();
+        $targetWeight = $weightTarget ? $weightTarget->target_weight : null;
+
+        return view('admin.goal_setting', compact('targetWeight'));
     }
 
     /**
@@ -42,22 +78,19 @@ class WeightLogController extends Controller
      */
     public function updateGoal(GoalSettingRequest $request)
     {
-        // $request 変数を使用するため、「薄くなる」警告は解消
-        $validatedData = $request->validated(); // 自動バリデーション後のデータを取得
+        $validatedData = $request->validated();
 
         try {
-            // updateOrCreate: user_idが一致するレコードがあれば更新、なければ新規作成
             WeightTarget::updateOrCreate(
-                ['user_id' => Auth::id()], // 検索条件
-                ['target_weight' => $validatedData['target_weight']] // 更新データ (モデルの $fillable と一致)
+                ['user_id' => Auth::id()],
+                ['target_weight' => $validatedData['target_weight']]
             );
 
-            // 成功メッセージとともにリダイレクト
             return redirect()->route('weight-logs')->with('success', '目標体重を更新しました。');
         } catch (\Exception $e) {
             Log::error('目標体重の保存エラー: ' . $e->getMessage());
-            // エラーが発生した場合、設定画面に戻し、エラーメッセージを表示
-            return redirect()->back()->withErrors(['target_weight' => '目標体重の保存中にエラーが発生しました。時間をおいて再度お試しください。']);
+
+            return redirect()->back()->with('error', '目標体重の保存中にエラーが発生しました。時間をおいて再度お試しください。');
         }
     }
 
@@ -75,10 +108,9 @@ class WeightLogController extends Controller
      */
     public function update(Request $request, $weightLogId)
     {
-        // FN026, FN027: FormRequestバリデーションとDB更新処理を想定
-        return redirect()->route('weight-logs')->with('status', '体重ログを更新しました。');
+        // TODO: ここに更新ロジックの実装が必要です
+        return redirect()->route('weight-logs')->with('success', '体重ログを更新しました。');
     }
-
     /**
      * FN028: データ削除処理
      */
