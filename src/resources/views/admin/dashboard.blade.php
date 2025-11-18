@@ -33,11 +33,11 @@
     $dateTo = request('date_to');
     $searchRange = '';
 
-    if ($dateFrom && $dateTo) {
+    if (strval($dateFrom) && strval($dateTo)) { // 両方設定されている場合
         $searchRange = str_replace('-', '/', $dateFrom) . ' 〜 ' . str_replace('-', '/', $dateTo);
-    } elseif ($dateFrom) {
+    } elseif (strval($dateFrom)) { // 開始日のみ設定されている場合
         $searchRange = str_replace('-', '/', $dateFrom) . ' 以降';
-    } elseif ($dateTo) {
+    } elseif (strval($dateTo)) { // 終了日のみ設定されている場合
         $searchRange = str_replace('-', '/', $dateTo) . ' 以前';
     } else {
         $searchRange = '全期間';
@@ -185,45 +185,64 @@
                 <h2>Weight Logを追加</h2>
             </div>
             
-            <form method="POST" action="{{ route('store_log') }}" class="modal-form">
+            <form method="POST" action="{{ route('store_log') }}" class="modal-form" novalidate>
                 @csrf
-                {{-- 日付 (FN025-1) --}}
+                {{-- 1. 日付 (FN025-1) --}}
                 <div class="form-group">
                     <label for="reg_date">日付</label>
-                    {{-- old() 関数でバリデーションエラー時の入力を保持、エラーがない場合は今日の日付を設定 --}}
-                    <input id="reg_date" type="date" name="date" required value="{{ old('date', date('Y-m-d')) }}">
-                    @error('date')<span class="error-message">{{ $message }}</span>@enderror {{-- FN027-1a --}}
+                    <input id="reg_date" type="date" name="date" required value="{{ old('date') }}" placeholder="年/月/日">
+                    @error('date')<span class="error-message">{{ $message }}</span>@enderror 
                 </div>
 
-                {{-- 体重 (FN025-2) --}}
+                {{-- 2. 体重 (FN025-2) --}}
                 <div class="form-group">
                     <label for="reg_weight">体重</label>
-                    <input id="reg_weight" type="text" name="weight" step="0.1" placeholder="例: 45.0" required value="{{ old('weight') }}">
-                    <span class="unit">kg</span>
-                    @error('weight')<span class="error-message">{{ $message }}</span>@enderror {{-- FN027-2 --}}
+                    <div class="input-unit-wrapper"> 
+                        <input id="reg_weight" type="text" name="weight" step="0.1" placeholder="50.0" required value="{{ old('weight') }}">
+                        <span class="unit">kg</span>
+                    </div>
+                    {{-- 複数のエラーメッセージをすべて表示するために $errors->get('weight') をループ --}}
+                    @error('weight')
+                        @foreach ($errors->get('weight') as $message)
+                            <span class="error-message">{{ $message }}</span>
+                        @endforeach
+                    @enderror
                 </div>
 
-                {{-- 食事摂取カロリー (FN025-3) --}}
+                {{-- 3. 食事摂取カロリー (FN025-3) --}}
                 <div class="form-group">
                     <label for="reg_calories">食事摂取カロリー</label>
-                    <input id="reg_calories" type="text" name="calories" required value="{{ old('calories') }}">
-                    <span class="unit">cal</span>
-                    @error('calories')<span class="error-message">{{ $message }}</span>@enderror {{-- FN027-3 --}}
+                    <div class="input-unit-wrapper"> 
+                        <input id="reg_calories" type="text" name="calories" required value="{{ old('calories') }}" placeholder="1200">
+                        <span class="unit">cal</span> 
+                    </div>
+                    @error('calories')<span class="error-message">{{ $message }}</span>@enderror
                 </div>
 
-                {{-- 運動時間 (FN025-4) --}}
+                {{-- 4. 運動時間 (FN025-4) --}}
                 <div class="form-group">
                     <label for="reg_exercise_time">運動時間</label>
-                    {{-- FN025-4a, 4b: input type="time" を使用 --}}
-                    <input id="reg_exercise_time" type="time" name="exercise_time" required value="{{ old('exercise_time', '00:00') }}">
-                    @error('exercise_time')<span class="error-message">{{ $message }}</span>@enderror {{-- FN027-4 --}}
+                    {{-- type="time"からtype="text"に変更し、placeholder="00:00"を設定。JavaScriptは削除 --}}
+                    <input 
+                        id="reg_exercise_time" 
+                        type="text" 
+                        name="exercise_time" 
+                        required 
+                        value="{{ old('exercise_time', '') }}" 
+                        placeholder="00:00"
+                        pattern="\d{2}:\d{2}" {{-- 2桁:2桁 の形式を要求 --}}
+                        title="00:00形式で入力してください" {{-- 形式が異なる場合のエラーメッセージ --}}
+                        maxlength="5" {{-- HH:MM (5文字) の長さ制限 --}}
+                        {{-- oninput="formatTime(this)" は削除しました --}}
+                    >
+                    @error('exercise_time')<span class="error-message">{{ $message }}</span>@enderror 
                 </div>
 
-                {{-- 運動内容 (FN025-5) --}}
-                <div class="form-group">
+                {{-- 5. 運動内容 (FN025-5) --}}
+                <div class="form-group no-unit">
                     <label for="reg_exercise_content">運動内容</label>
-                    <textarea id="reg_exercise_content" name="exercise_content" maxlength="120" rows="3">{{ old('exercise_content') }}</textarea>
-                    @error('exercise_content')<span class="error-message">{{ $message }}</span>@enderror {{-- FN027-5 --}}
+                    <textarea id="reg_exercise_content" name="exercise_content" maxlength="120" rows="3" placeholder="運動内容を追加">{{ old('exercise_content') }}</textarea>
+                    @error('exercise_content')<span class="error-message">{{ $message }}</span>@enderror 
                 </div>
 
                 <div class="modal-actions">
@@ -234,10 +253,8 @@
         </div>
     </div>
     
-    {{-- 検索モーダルはインラインフォームに置き換えられたため削除 --}}
-
     <script>
-        // モーダル制御関数
+        // モーダル制御関数 (JavaScriptはこれだけ維持します)
         function openModal(id) {
             document.getElementById(id).classList.remove('hidden');
             document.getElementById(id).classList.add('visible');
@@ -247,5 +264,7 @@
             document.getElementById(id).classList.remove('visible');
             document.getElementById(id).classList.add('hidden');
         }
+        
+        // 運動時間入力用のフォーマット関数はルールに従い削除しました
     </script>
 @endsection

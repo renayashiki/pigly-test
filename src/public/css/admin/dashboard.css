@@ -1,6 +1,3 @@
-/* -------------------------------------- */
-/* ② ダッシュボード本体、テーブル、モーダルスタイル (最終修正版) */
-/* -------------------------------------- */
 :root {
     --primary-color: #795548; /* 茶系 */
     --secondary-color: #8D6E63; /* 少し明るい茶系 */
@@ -12,10 +9,9 @@
     --hover-bg: #F5F5F5;
     --positive-color: #4CAF50; /* 緑 */
     --negative-color: #F44336; /* 赤 */
-    
     /* モーダルフォームの最大幅を定義 (ボタンを広げるために調整) */
     --modal-form-max-width: 440px; 
-    
+
     /* 修正1: 必須マーク用の赤色 */
     --required-bg: #F44336; 
 }
@@ -56,17 +52,17 @@
 }
 
 .summary-card.diff .value {
-    color: var(--text-color); 
+    color: var(--text-color);
 }
 
 .summary-card.diff.positive .value {
-    color: var(--positive-color); 
+    color: var(--positive-color);
 }
 
 /* --- Action Bar & Inline Search Form --- (省略) */
 .action-bar {
     display: flex;
-    justify-content: flex-start; 
+    justify-content: flex-start;
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
@@ -81,7 +77,7 @@
 .action-bar .form-group-inline label {
     font-size: 14px;
     color: var(--text-color);
-    white-space: nowrap; 
+    white-space: nowrap;
 }
 
 .action-bar .form-group-inline input[type="date"] {
@@ -89,7 +85,7 @@
     border: 1px solid var(--border-color);
     border-radius: 5px;
     font-size: 14px;
-    width: 130px; 
+    width: 130px;
 }
 
 .action-bar .search-button {
@@ -303,34 +299,39 @@
 .modal-form .form-group {
     margin-bottom: 20px;
     position: relative;
-    /* 単位の表示のためパディングを確保 */
-    padding-right: 40px; 
+    /* 単位の表示のためのパディングはinput-unit-wrapper内のFlexで処理 */
 }
 
-/* !!! 最終修正: ラベル内のテキストと必須マークの配置調整 !!! */
-.modal-form .form-group label {
-    display: flex; /* Flexboxを使ってテキストと::afterを横並びにする */
+/* !!! 修正点: inputとunitをまとめるための新しいラッパーを定義 !!! */
+.modal-form .input-unit-wrapper {
+    display: flex; /* Flexboxを使ってinputとunitを横並びにする */
     align-items: center; /* 垂直方向の中央揃え */
+    gap: 10px; /* inputとunitの間に少しスペースを開ける */
+}
+
+
+/* ラベル内のテキストと必須マークの配置調整 */
+.modal-form .form-group label {
+    display: flex; 
+    align-items: center; 
     font-weight: bold;
     margin-bottom: 5px;
     width: 100%;
-    /* ラベル自体の幅は100%を維持し、文字が途切れるのを防ぐ */
 }
 
 /* 必須マークのスタイル */
 .modal-form .form-group label::after {
     content: "必須";
     background-color: var(--required-bg); 
-    color: white; 
-    font-size: 10px; 
+    color: white;
+    font-size: 10px;
     font-weight: bold;
-    padding: 3px 6px; 
-    border-radius: 3px; 
-    margin-left: 8px; /* テキストとの間にスペースを設ける */
-    display: inline-block; 
+    padding: 3px 6px;
+    border-radius: 3px;
+    margin-left: 10px; 
+    display: inline-block;
     white-space: nowrap;
-    /* Flexアイテムとして機能させるため、widthなどは指定しない */
-    flex-shrink: 0; /* 必須マークが縮小しないようにする */
+    flex-shrink: 0; 
 }
 
 
@@ -344,35 +345,28 @@
     border-radius: 5px;
     box-sizing: border-box;
     font-size: 16px;
-    flex-grow: 1;
-    border: 1px solid var(--border-color);
 }
 
-/* 体重、摂取カロリー（type="text"に変更された想定）の入力欄調整 */
+/* 体重、摂取カロリー（type="text"）の入力欄調整 (修正点) */
 .modal-form input[type="text"] {
     border: 1px solid var(--border-color);
     border-radius: 5px;
     box-sizing: border-box;
     font-size: 16px;
-
-    padding: 10px 5px;
-    
-    /* 単位と並べるための幅調整 */
-    width: calc(100% - 40px); 
-    float: left; 
+    padding: 10px; 
+    flex-grow: 1; /* input-unit-wrapper内で残りのスペースを全て使用 */
+    width: 100%; /* Flexbox内で動作させるため */
 }
 
-/* 単位表示のスタイル */
+/* 単位表示のスタイル (修正点) */
 .modal-form .unit {
-    position: absolute;
-    right: 10px;
-    top: 45px; 
+    position: static; /* absoluteを解除し、Flexアイテムとして配置 */
     color: #999;
     font-size: 16px; 
     line-height: 1.5; 
-    display: inline-block;
-    width: 30px; 
     text-align: right;
+    flex-shrink: 0; /* 単位が縮小しないようにする */
+    padding-right: 5px;
 }
 
 /* 運動内容のフォームグループ（単位がないと仮定）のパディングと幅の調整 */
@@ -386,13 +380,15 @@
 }
 
 
-/* バリデーションエラーの表示 (省略) */
+/* !!! 修正点: バリデーションエラーの表示位置を修正 !!! */
 .error-message { 
     color: var(--negative-color);
     font-size: 12px;
-    margin-top: 5px;
+    margin-top: 5px; /* input/wrapper の下に確実にスペースを空ける */
     display: block;
+    clear: both; /* 左右の float や flex の影響を受けないようにする */
 }
+
 
 /* モーダル内プライマリボタン: 常時グラデーション */
 .btn-primary {

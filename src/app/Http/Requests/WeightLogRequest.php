@@ -53,7 +53,7 @@ class WeightLogRequest extends FormRequest
             'weight.numeric' => '数字で入力してください',
             'weight.max' => '4桁までの数字で入力してください',
             // decimal の代わりに regex エラーメッセージを使用
-            'weight.regex' => '小数点は1桁までで入力してください。',
+            'weight.regex' => '小数点は1桁までで入力してください',
 
             // 摂取カロリー (FN027-3)
             'calories.required' => '摂取カロリーを入力してください',
