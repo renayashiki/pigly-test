@@ -252,7 +252,7 @@
             </form>
         </div>
     </div>
-    
+
     <script>
         // モーダル制御関数 (JavaScriptはこれだけ維持します)
         function openModal(id) {
@@ -264,7 +264,7 @@
             document.getElementById(id).classList.remove('visible');
             document.getElementById(id).classList.add('hidden');
         }
-        
+
         // 運動時間入力用のフォーマット関数はルールに従い削除しました
     </script>
 @endsection
