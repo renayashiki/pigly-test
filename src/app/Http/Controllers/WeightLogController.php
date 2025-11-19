@@ -17,7 +17,7 @@ class WeightLogController extends Controller
     /**
      * FN016: 管理画面(ダッシュボード)の表示
      */
-    public function index()
+    public function index(Request $request)
     {
         $userId = Auth::id();
 
@@ -30,6 +30,22 @@ class WeightLogController extends Controller
         $weightLogsQuery = WeightLog::where('user_id', $userId)
             ->orderBy('date', 'desc')
             ->orderBy('id', 'desc');
+
+
+        // ★ 2. 検索条件の適用 (FN017)
+        $dateFrom = $request->input('date_from');
+        $dateTo = $request->input('date_to');
+
+        if ($dateFrom) {
+            // date_from がある場合、指定日以降 (>=)
+            // SQLのdateカラムは日付型なので、そのまま比較可能
+            $weightLogsQuery->where('date', '>=', $dateFrom);
+        }
+
+        if ($dateTo) {
+            // date_to がある場合、指定日以前 (<=)
+            $weightLogsQuery->where('date', '<=', $dateTo);
+        }
 
         $weightLogs = $weightLogsQuery->paginate(8);
 
