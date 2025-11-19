@@ -22,8 +22,8 @@ class WeightLogSeeder extends Seeder
         $logs = [];
         $startDate = Carbon::now()->subYear(); // 1年前からスタート
 
-        // 50件のダミーデータを作成
-        for ($i = 0; $i < 50; $i++) {
+        // 30件のダミーデータを作成 (件数を30に変更)
+        for ($i = 0; $i < 30; $i++) {
             $currentDate = $startDate->copy()->addDays($i * 7); // 7日ごとに記録（週に1回程度のイメージ）
 
             // 体重 (例: 50.0kg から 80.0kg の範囲でランダムに生成)
