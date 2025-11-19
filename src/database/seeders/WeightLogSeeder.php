@@ -20,11 +20,16 @@ class WeightLogSeeder extends Seeder
 
         $faker = \Faker\Factory::create('ja_JP');
         $logs = [];
-        $startDate = Carbon::now()->subYear(); // 1年前からスタート
 
-        // 30件のダミーデータを作成 (件数を30に変更)
+        // --- 修正点: データ生成期間を現在から過去約3ヶ月間に設定 ---
+        $today = Carbon::today();
+        $pastDate = Carbon::today()->subDays(90); // 過去90日間（約3ヶ月。9月、10月、11月を含む範囲）
+        // -------------------------------------------------------------
+
+        // 30件のダミーデータを作成
         for ($i = 0; $i < 30; $i++) {
-            $currentDate = $startDate->copy()->addDays($i * 7); // 7日ごとに記録（週に1回程度のイメージ）
+            // 過去90日間の間でランダムな日付を生成し、Y-m-d形式でフォーマットする
+            $currentDate = $faker->dateTimeBetween($pastDate, $today)->format('Y-m-d');
 
             // 体重 (例: 50.0kg から 80.0kg の範囲でランダムに生成)
             $weight = $faker->randomFloat(1, 50, 80);
@@ -48,7 +53,7 @@ class WeightLogSeeder extends Seeder
 
             $logs[] = [
                 'user_id' => 1, // ログインユーザーのIDに合わせて調整が必要な場合があります
-                'date' => $currentDate->format('Y-m-d'),
+                'date' => $currentDate,
                 'weight' => $weight,
                 'calories' => $calories,
                 'exercise_time' => $exerciseTime,
