@@ -143,7 +143,6 @@ return [
     | these features or you can even remove all of these if you need to.
     |
     */
-
     'routes' => [
         'login' => true,
         'logout' => false, // ★ カスタムログアウト (LogoutRedirectController) を優先するため無効化
@@ -162,5 +161,4 @@ return [
             // 'window' => 0,
         ]),
     ],
-
 ];

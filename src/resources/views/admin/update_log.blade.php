@@ -46,9 +46,10 @@
     }
     
     // 他のデータはそのまま
-    $weightValue = $logData->weight ?? '';
-    $caloriesValue = $logData->calories ?? '';
-    $exerciseContent = $logData->exercise_content ?? '';
+    // バリデーションエラーで戻ってきた場合は old() の値を使用
+    $weightValue = old('weight', $logData->weight ?? '');
+    $caloriesValue = old('calories', $logData->calories ?? '');
+    $exerciseContent = old('exercise_content', $logData->exercise_content ?? '');
 @endphp
 
 <div class="log-form-container">
@@ -56,35 +57,57 @@
         <h2>Weight Log</h2>
     </div>
     
-    <form method="POST" action="{{ route('update_log', ['weightLogId' => $weightLogId]) }}" class="log-update-form">
+    <form method="POST" action="{{ route('update_log', ['weightLogId' => $weightLogId]) }}" class="log-update-form" novalidate>
         @csrf
         @method('PUT')
 
         <div class="form-group">
             <label for="update_date">日付</label>
-            <input id="update_date" type="date" name="date" required value="{{ $formattedDate }}">
+            {{-- old() を使ってバリデーション失敗時に入力値を保持 --}}
+            <input id="update_date" type="date" name="date" required value="{{ old('date', $formattedDate) }}">
+            {{-- ★ 修正箇所: バリデーションエラーメッセージの表示を追加 --}}
+            @error('date')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="form-group unit-group">
             <label for="update_weight">体重</label>
             <input id="update_weight" type="text" name="weight" step="0.1" placeholder="例: 45.0" required value="{{ $weightValue }}">
             <span class="unit">kg</span>
+            {{-- ★ 修正箇所: バリデーションエラーメッセージの表示を追加 --}}
+            @error('weight')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="form-group unit-group">
             <label for="update_calories">摂取カロリー</label>
             <input id="update_calories" type="text" name="calories" required value="{{ $caloriesValue }}">
             <span class="unit">cal</span>
+            {{-- ★ 修正箇所: バリデーションエラーメッセージの表示を追加 --}}
+            @error('calories')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="form-group">
             <label for="update_exercise_time">運動時間</label>
-            <input id="update_exercise_time" type="time" name="exercise_time" required value="{{ $formattedTime }}">
+            {{-- old() を使ってバリデーション失敗時に入力値を保持 --}}
+            <input id="update_exercise_time" type="time" name="exercise_time" required value="{{ old('exercise_time', $formattedTime) }}">
+            {{-- ★ 修正箇所: バリデーションエラーメッセージの表示を追加 --}}
+            @error('exercise_time')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="form-group no-unit">
             <label for="update_exercise_content">運動内容</label>
             <textarea id="update_exercise_content" name="exercise_content" maxlength="120" rows="3">{{ $exerciseContent }}</textarea>
+            {{-- ★ 修正箇所: バリデーションエラーメッセージの表示を追加 --}}
+            @error('exercise_content')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="form-actions">
