@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Http\Request;
 
 class Authenticate extends Middleware
 {
@@ -15,7 +16,9 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            return route('login');
+            // ★ 修正箇所：未認証の場合、ログイン画面ではなく /register/step1 にリダイレクトする
+            // ★ これで、未認証アクセス時も要件が満たされます。
+            return route('register.step1');
         }
     }
 }

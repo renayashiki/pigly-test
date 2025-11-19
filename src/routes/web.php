@@ -45,7 +45,7 @@ Route::middleware(['guest'])->group(function () {
 });
 
 // ログイン後のルート (認証済みユーザー専用)
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'setup.complete'])->group(function () {
 
     // ログアウトルート (404対策済み)
     Route::post('/logout', [LogoutRedirectController::class, 'destroy'])->name('logout');
@@ -53,19 +53,19 @@ Route::middleware(['auth'])->group(function () {
     // 体重管理画面 (WeightLogControllerを使用)
 
     // FN016: ダッシュボード表示
-    Route::get('/weight-logs', [WeightLogController::class, 'index'])->name('weight-logs');
+    Route::get('/weight_logs', [WeightLogController::class, 'index'])->name('weight-logs');
     // FN023-1: 登録処理
-    Route::post('/weight-logs/create', [WeightLogController::class, 'store'])->name('store_log');
+    Route::post('/weight_logs/create', [WeightLogController::class, 'store'])->name('store_log');
 
     // FN030: 目標体重設定画面表示
-    Route::get('/weight-logs/goal_setting', [WeightLogController::class, 'goalSetting'])->name('goal_setting');
+    Route::get('/weight_logs/goal_setting', [WeightLogController::class, 'goalSetting'])->name('goal_setting');
     // FN034-1: 目標体重更新処理
-    Route::put('/weight-logs/goal', [WeightLogController::class, 'updateGoal'])->name('update_goal');
+    Route::put('/weight_logs/goal', [WeightLogController::class, 'updateGoal'])->name('update_goal');
 
     // FN024: 詳細(情報更新)画面表示
-    Route::get('/weight-logs/{weightLogId}/update', [WeightLogController::class, 'edit'])->name('edit_log');
+    Route::get('/weight_logs/{weightLogId}/update', [WeightLogController::class, 'edit'])->name('edit_log');
     // FN029-1: 情報更新処理
-    Route::put('/weight-logs/{weightLogId}', [WeightLogController::class, 'update'])->name('update_log');
+    Route::put('/weight_logs/{weightLogId}', [WeightLogController::class, 'update'])->name('update_log');
     // FN028: 削除処理
-    Route::delete('/weight-logs/{weightLogId}', [WeightLogController::class, 'destroy'])->name('delete_log');
+    Route::delete('/weight_logs/{weightLogId}', [WeightLogController::class, 'destroy'])->name('delete_log');
 });
