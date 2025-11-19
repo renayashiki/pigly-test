@@ -18,7 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     // ログイン成功後のリダイレクト先を '/weight-logs' に設定します。
-    public const HOME = '/weight-logs';
+    public const HOME = '/weight_logs';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
