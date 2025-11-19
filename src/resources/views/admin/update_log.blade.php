@@ -8,27 +8,19 @@
 
 @section('content')
 @php
+    // --- コントローラーからのデータ受け取りを前提とする ---
+    // $weightLogId: URLから渡されたログのID (Controllerで定義済み)
+    // $logData: データベースから取得した WeightLog モデルインスタンス (Controllerで定義済み)
+    
     // 変数が未定義の場合のエラーを避けるための安全策
+    $weightLogId = $weightLogId ?? null;
     $logData = $logData ?? (object)[
-    'id' => null,
-    'date' => '', 
-    'weight' => '', 
-    'calories' => '', 
-    'exercise_time' => '', 
-    'exercise_content' => '',
-];
-
-// ルート生成に必要なログIDを変数に格納
-if (!isset($logData) || is_null($logData) || !isset($logData->id)) {
-        // Log::warning() などでログを記録するロジックがあればここに追加
-        
-        // ヘッダーを送信する前にリダイレクトを強制実行
-        // このエラーはBlade実行中に発生するため、Laravelのredirect()ヘルパーが使えません。
-        header('Location: ' . route('weight-logs'));
-        exit(); 
-    }
-
-$weightLogId = $logData->id; 
+        'date' => '', 
+        'weight' => '', 
+        'calories' => '', 
+        'exercise_time' => '', 
+        'exercise_content' => '',
+    ];
 
     // --- 修正点: 日付と時間の表示形式を明示的に指定 ---
     // input type="date" は 'Y-m-d' (YYYY-MM-DD) 形式を要求

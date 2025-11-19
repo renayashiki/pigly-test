@@ -43,15 +43,6 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.login');
         });
 
-        // ★★★ 認証成功後のリダイレクト先を明示的に設定（最重要修正） ★★★
-        // ルール②を適用: 認証成功後、/weight_logs へリダイレクトする
-        // これがないと、setup.complete ミドルウェアとの間で /weight_logs <-> /register/step2 の無限ループが発生します。
-        Fortify::redirects(
-            \App\Models\User::class,
-            fn() => route('weight-logs')
-        );
-        // ★★★ ここまで追記 ★★★
-
         // ログイン試行のレートリミッター設定
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;

@@ -92,7 +92,7 @@
         </div>
         
         {{-- 検索フォームとアクションバーを統合 --}}
-        <form method="GET" action="{{ route('search_logs') }}" class="action-bar search-form-inline">
+        <form method="GET" action="{{ route('weight-logs') }}" class="action-bar search-form-inline">
             
             {{-- FN017: 日付 (古い日付) (見本に合わせたインライン配置) --}}
             <div class="form-group-inline date-from">
