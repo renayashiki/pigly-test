@@ -7,10 +7,11 @@ use App\Models\WeightTarget;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use App\Http\Requests\WeightLogRequest; // 更新処理でバリデーションを使用
+use App\Http\Requests\WeightLogRequest;
 use App\Models\WeightLog;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Exception;
 
 class WeightLogController extends Controller
 {
@@ -26,24 +27,20 @@ class WeightLogController extends Controller
         $targetWeight = $weightTarget ? $weightTarget->target_weight : null;
 
         // DBからログ一覧を取得（FN016, ページネーション含む）
-        // ページネーション：8件ごと (FN016 ページネーションの要件)
+        // ページネーション：8件ごと (要件通り)
         $weightLogsQuery = WeightLog::where('user_id', $userId)
             ->orderBy('date', 'desc')
             ->orderBy('id', 'desc');
 
-
-        // ★ 2. 検索条件の適用 (FN017)
+        // 検索条件の適用 (FN017)
         $dateFrom = $request->input('date_from');
         $dateTo = $request->input('date_to');
 
         if ($dateFrom) {
-            // date_from がある場合、指定日以降 (>=)
-            // SQLのdateカラムは日付型なので、そのまま比較可能
             $weightLogsQuery->where('date', '>=', $dateFrom);
         }
 
         if ($dateTo) {
-            // date_to がある場合、指定日以前 (<=)
             $weightLogsQuery->where('date', '<=', $dateTo);
         }
 
@@ -72,9 +69,11 @@ class WeightLogController extends Controller
             ]);
 
             return redirect()->route('weight-logs')->with('success', '体重ログを登録しました。');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            // エラー捕捉
             Log::error('体重ログの登録エラー: ' . $e->getMessage());
 
+            // エラーが発生した場合はエラーメッセージを返す
             return redirect()->route('weight-logs')->with('error', '体重ログの登録中にエラーが発生しました。再度お試しください。');
         }
     }

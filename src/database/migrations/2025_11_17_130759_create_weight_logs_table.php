@@ -23,9 +23,6 @@ class CreateWeightLogsTable extends Migration
             $table->time('exercise_time')->nullable()->comment('運動時間');
             $table->text('exercise_content')->nullable()->comment('運動内容');
             $table->timestamps();
-
-            // ユーザーIDと日付の組み合わせで重複を禁止
-            $table->unique(['user_id', 'date']);
         });
     }
 

@@ -16,7 +16,7 @@ class WeightLogSeeder extends Seeder
     public function run()
     {
         // 既存のログを全て削除（テスト用）
-        // DB::table('weight_logs')->truncate();
+        DB::table('weight_logs')->truncate();
 
         $faker = \Faker\Factory::create('ja_JP');
         $logs = [];
