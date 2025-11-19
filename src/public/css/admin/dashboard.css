@@ -443,3 +443,9 @@
     color: #c62828;
     border: 1px solid #ef9a9a;
 }
+
+.modal-form .form-group.not-required label::after {
+    content: none; /* 必須マークを非表示にする */
+    margin-left: 0; /* マージンも削除 */
+    padding: 0;
+}

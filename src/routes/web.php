@@ -55,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
     // FN016: ダッシュボード表示
     Route::get('/weight-logs', [WeightLogController::class, 'index'])->name('weight-logs');
     // FN023-1: 登録処理
-    Route::post('/weight-logs', [WeightLogController::class, 'store'])->name('store_log');
+    Route::post('/weight-logs/create', [WeightLogController::class, 'store'])->name('store_log');
 
     // FN030: 目標体重設定画面表示
     Route::get('/weight-logs/goal_setting', [WeightLogController::class, 'goalSetting'])->name('goal_setting');

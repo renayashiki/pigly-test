@@ -239,11 +239,11 @@
                 </div>
 
                 {{-- 5. 運動内容 (FN025-5) --}}
-                <div class="form-group no-unit">
-                    <label for="reg_exercise_content">運動内容</label>
-                    <textarea id="reg_exercise_content" name="exercise_content" maxlength="120" rows="3" placeholder="運動内容を追加">{{ old('exercise_content') }}</textarea>
-                    @error('exercise_content')<span class="error-message">{{ $message }}</span>@enderror 
-                </div>
+                <div class="form-group no-unit not-required">
+                    <label for="reg_exercise_content">運動内容</label>
+                    <textarea id="reg_exercise_content" name="exercise_content" maxlength="120" rows="3" placeholder="運動内容を追加">{{ old('exercise_content') }}</textarea>
+                    @error('exercise_content')<span class="error-message">{{ $message }}</span>@enderror 
+                </div>
 
                 <div class="modal-actions">
                     <button type="button" class="btn-secondary" onclick="closeModal('register-modal')">戻る</button>
