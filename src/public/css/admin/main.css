@@ -82,3 +82,18 @@ body {
     padding-top: 20px;
     padding-bottom: 50px;
 }
+
+/* アイコンとテキストを並べるためのラッパー */
+.icon-button-content {
+    display: flex;
+    align-items: center; /* 垂直中央揃え */
+    gap: 5px; /* アイコンとテキストの間隔 */
+}
+
+/* ヘッダー内アイコンの共通スタイル */
+.icon-header {
+    width: 16px; /* アイコンのサイズ */
+    height: 16px;
+    /* 色はボタンの文字色を継承させるため、currentColorを使用。ここでは設定不要。 */
+    flex-shrink: 0; /* アイコンが縮まないようにする */
+}
