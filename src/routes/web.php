@@ -10,10 +10,11 @@ use Laravel\Fortify\Fortify;
 
 Fortify::ignoreRoutes();
 
-// ゲストユーザー向けのルート (認証不要)
+
+//ゲストユーザー向けのルート
 Route::middleware(['guest'])->group(function () {
 
-    // 会員登録 Step 1 (GET /register/step1)
+    // 会員登録 Step 1
     Route::get('/register/step1', function () {
         return view('auth.register-step1');
     })->name('register.step1');
@@ -22,10 +23,6 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/register', [AuthController::class, 'storeStep1'])
         ->middleware('throttle:' . config('fortify.limiters.register'))
         ->name('register.post');
-
-    // 初期目標体重登録画面 Step2
-    Route::get('/register/step2', [AuthController::class, 'createStep2'])->name('register.step2');
-    Route::post('/register/step2/complete', [AuthController::class, 'storeStep2'])->name('register.step2.store');
 
     // ログイン画面
     Route::get('/login', function () {
@@ -40,7 +37,17 @@ Route::middleware(['guest'])->group(function () {
         ->name('login.post');
 });
 
-// ログイン後のルート (認証済みユーザー専用)
+
+// 新規登録中のユーザー向けルート (認証済みだがセットアップ未完了)
+Route::middleware(['auth'])->group(function () {
+    // 初期目標体重登録画面 Step2
+    Route::get('/register/step2', [AuthController::class, 'createStep2'])->name('register.step2');
+    Route::post('/register/step2/complete', [AuthController::class, 'storeStep2'])->name('register.step2.store');
+});
+
+
+
+// ログイン後の主要なルート (セットアップ完了済みユーザー専用)
 Route::middleware(['auth', 'setup.complete'])->group(function () {
 
     // ログアウトルート
@@ -68,5 +75,5 @@ Route::middleware(['auth', 'setup.complete'])->group(function () {
     Route::put('/weight_logs/{weightLogId}/update', [WeightLogController::class, 'update'])->name('update_log');
 
     // 削除処理
-    Route::delete('/weight_logs/{weightLogId}/delete', [WeightLogController::class, 'destroy'])->name('delete_log');
+    Route::delete('/weight_logs/{weightLogId}', [WeightLogController::class, 'destroy'])->name('delete_log');
 });
