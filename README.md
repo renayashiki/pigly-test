@@ -34,7 +34,12 @@ php artisan migrate
 ``` bash
 php artisan db:seed
 ```
-<!-- 後でダミーのログイン情報を入れる -->
+
+> * 下記のダミーデータのログイン情報でログインすることが可能*
+``` bash
+- email: test@example.com
+- password: password
+```
 
 ## 使用技術(実行環境)
 - PHP
@@ -42,11 +47,17 @@ php artisan db:seed
 - MySQL
 
 ## テーブル設計
-
+![user table](./docs/user table.png)
+![weight_target table](./docs/weight_target table.png)
+![wight_logs table](./docs/wight_logs table.png)
 
 ## ER図
 
 
 ## URL
 - 開発環境：http://localhost/
-- phpMyAdmin:：http://localhost:8080/
+- phpMyAdmin: http://localhost:8080/
+- ログイン画面: http://localhost/login
+- 新規会員登録: http://localhost/register/step1
+- 管理画面: http://localhost/weight_logs
+- 
