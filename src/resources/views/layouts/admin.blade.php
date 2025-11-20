@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="{{ asset('css/admin/main.css') }}">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-
     @yield('styles')
 </head>
 <body>
@@ -16,7 +15,6 @@
         <nav class="admin-nav">
             <div class="header-logo">PiGLy</div>
             <div class="header-actions">
-                
                 {{-- 目標体重設定ボタン --}}
                 <button type="button" class="btn-goal-setting" onclick="window.location='{{ route('goal_setting') }}'">
                     <span class="icon-button-content">
@@ -28,7 +26,6 @@
                         目標体重設定
                     </span>
                 </button>
-                
                 <form method="POST" action="{{ route('logout') }}" class="inline-form">
                     {{-- ログアウトボタン --}}
                     @csrf
@@ -56,7 +53,6 @@
                 modal.classList.remove('hidden');
             }
         }
-
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {

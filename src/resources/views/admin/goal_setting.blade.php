@@ -11,7 +11,7 @@
 
 <div class="goal-setting-container">
     <div class="form-header">
-        <h2>目標体重設定</h2>
+        <h1>目標体重設定</h1>
     </div>
     <form method="POST" action="{{ route('update_goal') }}" class="goal-setting-form" novalidate >
         @csrf

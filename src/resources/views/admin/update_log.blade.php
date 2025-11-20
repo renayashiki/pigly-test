@@ -42,7 +42,7 @@
 
 <div class="log-form-container">
     <div class="form-header">
-        <h2>Weight Log</h2>
+        <h1>Weight Log</h1>
     </div>
     <form method="POST" action="{{ route('update_log', ['weightLogId' => $weightLogId]) }}" class="log-update-form" novalidate>
         @csrf
@@ -116,7 +116,6 @@
         </div>
         <div class="custom-modal-actions">
             <button type="button" class="btn-secondary" onclick="hideDeleteConfirmation()">キャンセル</button>
-            
             <form id="delete-form" method="POST" action="{{ route('delete_log', ['weightLogId' => $weightLogId]) }}" style="margin: 0; display: inline-block;">
                 @csrf
                 @method('DELETE')
