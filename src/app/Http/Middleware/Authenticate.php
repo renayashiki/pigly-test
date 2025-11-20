@@ -16,7 +16,6 @@ class Authenticate extends Middleware
     {
         if (! $request->expectsJson()) {
             // 未認証の場合のリダイレクト先を 'login' から 'register' ルートへ変更
-            // Fortifyの登録画面（Step 1のビュー）が表示されるルートです。
             return route('register');
         }
     }

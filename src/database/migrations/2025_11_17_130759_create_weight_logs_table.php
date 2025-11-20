@@ -16,7 +16,6 @@ class CreateWeightLogsTable extends Migration
         Schema::create('weight_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            // date: date, NOT NULL (ユーザーIDとの複合UNIQUEを設定)
             $table->date('date')->comment('日付');
             $table->decimal('weight', 4, 1)->comment('体重');
             $table->integer('calories')->nullable()->comment('食事量 (カロリー)');

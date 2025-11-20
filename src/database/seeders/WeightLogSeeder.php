@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-// 必要なモデルをuse
 use App\Models\User;
 use App\Models\WeightTarget;
 use App\Models\WeightLog;
@@ -18,7 +17,6 @@ class WeightLogSeeder extends Seeder
      */
     public function run()
     {
-        // 既存のログと目標を全て削除
         DB::table('weight_logs')->truncate();
         DB::table('weight_targets')->truncate();
 
@@ -32,13 +30,13 @@ class WeightLogSeeder extends Seeder
 
         $userId = $user->id;
 
-        // 目標体重のダミーデータを1件作成 (ファクトリを使用)
+        // 目標体重のダミーデータを1件作成
         WeightTarget::factory()->create([
             'user_id' => $userId,
-            'target_weight' => 65.0, // テスト用の目標値
+            'target_weight' => 65.0,
         ]);
 
-        // 体重ログのダミーデータを35件作成 (ファクトリを使用)
+        // 体重ログのダミーデータを35件作成
         WeightLog::factory()->count(35)->create([
             'user_id' => $userId,
         ]);

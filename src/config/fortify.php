@@ -146,7 +146,7 @@ return [
     */
     'routes' => [
         'login' => true,
-        'logout' => false, // ★ カスタムログアウト (LogoutRedirectController) を優先するため無効化
+        'logout' => false,
         'register' => true,
     ],
 
@@ -159,7 +159,6 @@ return [
         Features::twoFactorAuthentication([
             'confirm' => true,
             'confirmPassword' => true,
-            // 'window' => 0,
         ]),
     ],
 ];

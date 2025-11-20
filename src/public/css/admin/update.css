@@ -1,18 +1,17 @@
 :root {
     --primary-color: #795548;
     --secondary-color: #8D6E63;
-    --accent-color: #F8BBD0; /* ピンク系 (グラデーション開始色) */
-    --purple-color: #CE93D8; /* グラデーション用紫系 (グラデーション終了色) */
-    --gradient-main: linear-gradient(45deg, var(--accent-color), var(--purple-color)); /* ピンクと紫のグラデーション */
+    --accent-color: #F8BBD0;
+    --purple-color: #CE93D8;
+    --gradient-main: linear-gradient(45deg, var(--accent-color), var(--purple-color));
     --border-color: #E0E0E0;
-    --negative-color: #F44336; /* 赤 */
-    --button-width: 100px; /* 見本に合わせたボタン幅に統一 */
+    --negative-color: #F44336;
+    --button-width: 100px;
 }
 
-/* ★ 修正箇所: バリデーションエラーメッセージ用のスタイルを追加 ★ */
 .text-danger {
     color: var(--negative-color);
-    font-size: 14px; /* 小さすぎないサイズ */
+    font-size: 14px;
     margin-top: 5px;
     font-weight: 500;
 }
@@ -50,7 +49,6 @@
 
 /* 単位を持つフォームグループのパディングを追加 */
 .log-update-form .form-group.unit-group {
-    /* 単位 (kg/cal) を入力欄の右外に出すため、フォーム全体に右側のスペースを空ける */
     padding-right: 40px; 
 }
 
@@ -75,39 +73,31 @@
 /* 単位 (kg/cal) を入力欄の外、右側に配置 */
 .log-update-form .unit-group .unit {
     position: absolute;
-    /* .unit-group の右パディング内、右端に配置 */
-    right: 0; 
-    top: 40px; 
-    color: #333; 
-    font-size: 16px; 
-    line-height: 2; 
+    right: 0;
+    top: 40px;
+    color: #333;
+    font-size: 16px;
+    line-height: 2;
     pointer-events: none;
     font-weight: normal;
 }
 
-
-/* -------------------------------------- */
 /* ボタンエリア (form-actions) の配置とデザイン */
-/* -------------------------------------- */
 .form-actions {
-    border-top: none; 
+    border-top: none;
     padding-top: 20px;
     margin-top: 30px;
-    
-    /* 戻る・登録ボタン（中央コンテナ）とゴミ箱ボタン（右端）を配置 */
     display: flex;
-    /* 両端揃えにして、ゴミ箱を右に、中央ボタンを中央に配置する */
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
 }
 
 /* 戻る・登録ボタンを中央に配置するためのコンテナ */
 .center-buttons {
-    /* flexコンテナ内で左右のマージンをautoにすることで、コンテナ全体を中央に寄せる */
-    margin-left: auto; 
+    margin-left: auto;
     margin-right: auto;
     display: flex;
-    gap: 10px; /* 戻る・登録ボタン間の隙間 */
+    gap: 10px;
 }
 
 /* --- ゴミ箱ボタンのデザイン --- */
@@ -117,10 +107,8 @@
     cursor: pointer;
     padding: 0;
     transition: opacity 0.2s;
-    line-height: 1; 
-    
-    /* 右端に配置されるため、margin-left: auto; は不要。flex-endの反対側の要素として配置される */
-    width: 30px; 
+    line-height: 1;
+    width: 30px;
     height: 30px;
     display: flex;
     justify-content: center;
@@ -129,7 +117,6 @@
 
 /* ゴミ箱の左右にスペースがない場合に備えて調整 */
 .btn-delete:first-child {
-    /* 構造上、ゴミ箱は一番最後の要素になるため不要だが念のため */
     margin-right: 0;
 }
 
@@ -168,7 +155,7 @@
     opacity: 0.9;
 }
 
-/* 戻るボタン (グレー) */
+/* 戻るボタン */
 .btn-secondary {
     background-color: #E0E0E0;
     color: #333;
@@ -177,9 +164,8 @@
     opacity: 0.8;
 }
 
-/* -------------------------------------- */
+
 /* カスタム削除確認モーダル用スタイル */
-/* -------------------------------------- */
 .custom-modal-overlay {
     position: fixed;
     top: 0;

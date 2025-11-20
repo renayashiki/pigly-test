@@ -32,11 +32,8 @@ class WeightLogFactory extends Factory
         $exerciseTime = sprintf('%02d:%02d:00', $exerciseHour, $exerciseMinute);
 
         return [
-            // user_id はシーダー実行時に指定します
             'date' => $currentDate,
-            // 体重
             'weight' => $this->faker->randomFloat(1, 50, 80),
-            // 食事摂取カロリー
             'calories' => $this->faker->numberBetween(1500, 3000),
             'exercise_time' => $exerciseTime,
             'exercise_content' => $this->faker->randomElement([

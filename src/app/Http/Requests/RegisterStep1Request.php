@@ -36,12 +36,9 @@ class RegisterStep1Request extends FormRequest
     public function messages()
     {
         return [
-            // 1. お名前
             'name.required' => 'お名前を入力してください',
-            // 2. メールアドレス
             'email.required' => 'メールアドレスを入力してください',
             'email.email' => 'メールアドレスは「ユーザー名@ドメイン」形式で入力してください',
-            // 3. パスワード
             'password.required' => 'パスワードを入力してください',
         ];
     }

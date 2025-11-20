@@ -37,16 +37,9 @@ class GoalSettingRequest extends FormRequest
     public function messages(): array
     {
         return [
-            // a. 未入力
             'target_weight.required' => '体重を入力してください',
-
-            // b. 数値じゃない
             'target_weight.numeric' => '数字で入力してください',
-
-            // c. 4桁以内じゃない -> max
             'target_weight.max' => '4桁までの数字で入力してください',
-
-            // d. 小数点が1桁じゃない -> regex
             'target_weight.regex' => '小数点は1桁で入力してください',
         ];
     }

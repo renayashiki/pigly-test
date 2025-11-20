@@ -10,10 +10,8 @@ class WeightTarget extends Model
 {
     use HasFactory;
 
-    // テーブル名
     protected $table = 'weight_targets';
 
-    // マスアサインメント可能なカラム
     protected $fillable = [
         'user_id',
         'target_weight',
@@ -24,9 +22,6 @@ class WeightTarget extends Model
         'target_weight' => 'decimal:1',
     ];
 
-    /**
-     * この目標体重を持つユーザー
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

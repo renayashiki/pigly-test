@@ -10,7 +10,7 @@
 <div class="form-container">
     <div class="logo">PiGLy</div>
     <div class="subtitle">新規会員登録</div>
-    <div class="subtitle-detail">STEP2: 初期体重の入力</div> 
+    <div class="subtitle-detail">STEP2: 初期体重の入力</div>
 
     <form method="POST" action="{{ route('register.step2.store') }}" class="auth-form">
         @csrf
@@ -18,7 +18,6 @@
         <div class="form-group">
             <label for="current_weight">現在の体重</label>
             <div class="weight-input-group">
-                {{-- required 属性を削除 --}}
                 <input id="current_weight" type="text" name="current_weight" step="0.1" value="{{ old('current_weight') }}" placeholder="現在の体重を入力">
                 <span>kg</span>
             </div>
@@ -30,7 +29,6 @@
         <div class="form-group">
             <label for="target_weight">目標の体重</label>
             <div class="weight-input-group">
-                {{-- required 属性を削除 --}}
                 <input id="target_weight" type="text" name="target_weight" step="0.1" value="{{ old('target_weight') }}" placeholder="目標の体重を入力">
                 <span>kg</span>
             </div>

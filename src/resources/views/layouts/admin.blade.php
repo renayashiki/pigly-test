@@ -17,10 +17,10 @@
             <div class="header-logo">PiGLy</div>
             <div class="header-actions">
                 
-                {{-- 目標体重設定ボタン (ご要望の線画形状を塗りつぶしに変更) --}}
+                {{-- 目標体重設定ボタン --}}
                 <button type="button" class="btn-goal-setting" onclick="window.location='{{ route('goal_setting') }}'">
                     <span class="icon-button-content">
-                        {{-- 設定アイコン (ねじマーク) --}}
+                        {{-- 設定アイコン --}}
                         <svg class="icon-header icon-settings" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             {{-- 中央の穴を空けるため、パスを連結し fill-rule="evenodd" を適用 --}}
                             <path fill-rule="evenodd" d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1.82.33 1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.82-.33zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
@@ -30,7 +30,7 @@
                 </button>
                 
                 <form method="POST" action="{{ route('logout') }}" class="inline-form">
-                    {{-- ログアウトボタン (取っ手付きの扉と矢印のアイコン) --}}
+                    {{-- ログアウトボタン --}}
                     @csrf
                     <button type="submit" class="logout-button">
                         <span class="icon-button-content">
@@ -49,7 +49,6 @@
     <main class="admin-content">
         @yield('content')
     </main>
-    
     <script>
         function openModal(modalId) {
             const modal = document.getElementById(modalId);

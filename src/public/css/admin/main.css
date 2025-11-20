@@ -1,6 +1,3 @@
-/* -------------------------------------- */
-/* ① ヘッダー部分のみの共通CSS */
-/* -------------------------------------- */
 :root {
     --text-color: #333;
     --border-color: #E0E0E0;
@@ -16,7 +13,7 @@ body {
     line-height: 1.6;
 }
 
-/* --- 共通ヘッダー (FN029-4, 5) --- */
+/*共通ヘッダー*/
 .admin-nav {
     display: flex;
     justify-content: space-between;
@@ -86,14 +83,13 @@ body {
 /* アイコンとテキストを並べるためのラッパー */
 .icon-button-content {
     display: flex;
-    align-items: center; /* 垂直中央揃え */
-    gap: 5px; /* アイコンとテキストの間隔 */
+    align-items: center;
+    gap: 5px;
 }
 
 /* ヘッダー内アイコンの共通スタイル */
 .icon-header {
-    width: 16px; /* アイコンのサイズ */
+    width: 16px;
     height: 16px;
-    /* 色はボタンの文字色を継承させるため、currentColorを使用。ここでは設定不要。 */
-    flex-shrink: 0; /* アイコンが縮まないようにする */
+    flex-shrink: 0;
 }

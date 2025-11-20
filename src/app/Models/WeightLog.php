@@ -10,10 +10,8 @@ class WeightLog extends Model
 {
     use HasFactory;
 
-    // テーブル名
     protected $table = 'weight_logs';
 
-    // マスアサインメント可能なカラム
     protected $fillable = [
         'user_id',
         'date',
@@ -27,12 +25,8 @@ class WeightLog extends Model
     protected $casts = [
         'date' => 'date',
         'weight' => 'decimal:1',
-        // exercise_time は TIME 型で、データベースの値を文字列として保持します。
     ];
 
-    /**
-     * このログを持つユーザー
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

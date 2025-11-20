@@ -31,13 +31,12 @@
     } else {
         $searchRange = '全期間';
     }
-    
+
     $searchMessage = ($isSearching && $searchCount > 0)
         ? "{$searchRange}の検索結果 {$searchCount}件"
         : (($isSearching && $searchCount === 0)
             ? "{$searchRange}の検索結果 0件"
         : "");
-
     $oldDateFrom = request('date_from');
     $oldDateTo = request('date_to');
 
@@ -59,61 +58,39 @@
                 });
             </script>
         @endif
-
         {{-- サマリーエリア --}}
         <div class="summary-area">
             <div class="summary-card-group">
-                
-                {{-- 1. 目標体重 --}}
                 <div class="summary-item">
                     <span class="label">目標体重</span>
                     <span class="value">{{ sprintf('%.1f kg', $targetWeight) }}</span>
                 </div>
-                
-                {{-- 2. 目標までの差分 --}}
                 <div class="summary-item diff @if($diffToTarget > 0) positive @endif">
                     <span class="label">目標まで</span>
                     <span class="value">{{ $diffText }}</span>
                 </div>
-                
-                {{-- 3. 最新体重 --}}
                 <div class="summary-item">
                     <span class="label">最新体重</span>
                     <span class="value">{{ sprintf('%.1f kg', $latestWeight) }}</span>
                 </div>
-                
             </div>
         </div>
-
-        {{-- ログテーブルカード（検索フォームとテーブルを含む） --}}
         <div class="log-table-card">
-            
             {{-- 検索フォーム (action-bar) --}}
             <form method="GET" action="{{ route('search_logs') }}" class="action-bar search-form-inline">
-
-                {{-- 日付 From --}}
                 <div class="form-group-inline date-from">
                     <input id="date_from" type="date" name="date_from" value="{{ $oldDateFrom }}">
                 </div>
-
-                {{-- 日付 To --}}
                 <div class="form-group-inline date-to">
                     <label for="date_to">～</label>
                     <input id="date_to" type="date" name="date_to" value="{{ $oldDateTo }}">
                 </div>
-                
-                {{-- 検索ボタン --}}
                 <button type="submit" class="btn-secondary search-button">検索</button>
-                
-                {{-- 検索リセットボタン --}}
                 @if($isSearching)
                     <button type="button" class="btn-reset" onclick="window.location='{{ route('weight-logs') }}'">リセット</button>
                 @endif
-
-                {{-- データ追加ボタン --}}
                 <button type="button" class="btn-primary data-add-button" onclick="openModal('register-modal')">データを追加</button>
             </form>
-        
             {{-- 検索結果情報 (FN017-c) --}}
             @if($isSearching)
                 <div class="search-info">
@@ -136,7 +113,7 @@
                     {{-- DBから取得したログデータを表示 --}}
                     @forelse ($weightLogs as $log)
                     <tr class="log-item">
-                        <td class="date-col">{{ $log->date->format('Y/m/d') }}</td> 
+                        <td class="date-col">{{ $log->date->format('Y/m/d') }}</td>
                         <td class="weight-col">{{ sprintf('%.1f kg', $log->weight) }}</td>
                         <td class="calorie-col">{{ $log->calories }} cal</td>
                         <td class="time-col">{{ \Carbon\Carbon::parse($log->exercise_time)->format('H:i') }}</td>
@@ -162,31 +139,25 @@
                     @endforelse
                 </tbody>
             </table>
-        </div> {{-- .log-table-cardの閉じタグ --}}
-
-        {{-- ページネーションエリア --}}
+        </div>
         <div class="pagination-area">
             {{ $weightLogs->appends(request()->query())->links('vendor.pagination.default') }}
         </div>
-    </div> {{-- .dashboard-containerの閉じタグ --}}
+    </div>
 
-    {{-- FN018: ログ登録モーダル --}}
+    {{--ログ登録モーダル --}}
     <div id="register-modal" class="modal-overlay @if($errors->any()) visible @else hidden @endif">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Weight Logを追加</h2>
             </div>
-            
             <form method="POST" action="{{ route('store_log') }}" class="modal-form" novalidate>
                 @csrf
-                {{-- 1. 日付 --}}
                 <div class="form-group">
                     <label for="reg_date">日付</label>
                     <input id="reg_date" type="date" name="date" required value="{{ old('date') }}" placeholder="年/月/日">
                     @error('date')<span class="error-message">{{ $message }}</span>@enderror
                 </div>
-
-                {{-- 2. 体重 --}}
                 <div class="form-group">
                     <label for="reg_weight">体重</label>
                     <div class="input-unit-wrapper">
@@ -199,8 +170,6 @@
                         @endforeach
                     @enderror
                 </div>
-
-                {{-- 3. 食事摂取カロリー --}}
                 <div class="form-group">
                     <label for="reg_calories">食事摂取カロリー</label>
                     <div class="input-unit-wrapper">
@@ -209,8 +178,6 @@
                     </div>
                     @error('calories')<span class="error-message">{{ $message }}</span>@enderror
                 </div>
-
-                {{-- 4. 運動時間 --}}
                 <div class="form-group">
                     <label for="reg_exercise_time">運動時間</label>
                     <input
@@ -226,8 +193,6 @@
                     >
                     @error('exercise_time')<span class="error-message">{{ $message }}</span>@enderror
                 </div>
-
-                {{-- 5. 運動内容 --}}
                 <div class="form-group no-unit not-required">
                     <label for="reg_exercise_content">運動内容</label>
                     <textarea id="reg_exercise_content" name="exercise_content" maxlength="120" rows="3" placeholder="運動内容を追加">{{ old('exercise_content') }}</textarea>

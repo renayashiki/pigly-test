@@ -21,11 +21,10 @@ class WeightTargetFactory extends Factory
      */
     public function definition(): array
     {
-        // 目標体重をランダムに設定（例: 50.0kgから70.0kgの間）
+        // 目標体重をランダムに設定（50.0kg～70.0kgの間）
         $targetWeight = $this->faker->randomFloat(1, 50, 70);
 
         return [
-            // user_id はシーダー実行時に指定します
             'target_weight' => $targetWeight,
         ];
     }

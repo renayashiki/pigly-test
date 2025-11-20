@@ -8,45 +8,33 @@
 
 @section('content')
 @php
-    // --- コントローラーからのデータ受け取りを前提とする ---
-    // $weightLogId: URLから渡されたログのID (Controllerで定義済み)
-    // $logData: データベースから取得した WeightLog モデルインスタンス (Controllerで定義済み)
-    
-    // 変数が未定義の場合のエラーを避けるための安全策
     $weightLogId = $weightLogId ?? null;
     $logData = $logData ?? (object)[
-        'date' => '', 
-        'weight' => '', 
-        'calories' => '', 
-        'exercise_time' => '', 
+        'date' => '',
+        'weight' => '',
+        'calories' => '',
+        'exercise_time' => '',
         'exercise_content' => '',
     ];
 
-    // --- 修正点: 日付と時間の表示形式を明示的に指定 ---
-    // input type="date" は 'Y-m-d' (YYYY-MM-DD) 形式を要求
     $formattedDate = '';
     if ($logData->date) {
         try {
-            // Carbon::parse()を使って確実にCarbonオブジェクトにする
             $formattedDate = \Carbon\Carbon::parse($logData->date)->format('Y-m-d');
         } catch (\Exception $e) {
             $formattedDate = $logData->date;
         }
     }
 
-    // input type="time" は 'H:i' (HH:MM) 形式を要求
     $formattedTime = '';
     if ($logData->exercise_time) {
         try {
-            // DBによっては time 型が 'H:i:s' で返されるため、'H:i' に変換
             $formattedTime = \Carbon\Carbon::parse($logData->exercise_time)->format('H:i');
         } catch (\Exception $e) {
             $formattedTime = $logData->exercise_time;
         }
     }
-    
-    // 他のデータはそのまま
-    // バリデーションエラーで戻ってきた場合は old() の値を使用
+
     $weightValue = old('weight', $logData->weight ?? '');
     $caloriesValue = old('calories', $logData->calories ?? '');
     $exerciseContent = old('exercise_content', $logData->exercise_content ?? '');
@@ -56,16 +44,13 @@
     <div class="form-header">
         <h2>Weight Log</h2>
     </div>
-    
     <form method="POST" action="{{ route('update_log', ['weightLogId' => $weightLogId]) }}" class="log-update-form" novalidate>
         @csrf
         @method('PUT')
 
         <div class="form-group">
             <label for="update_date">日付</label>
-            {{-- old() を使ってバリデーション失敗時に入力値を保持 --}}
             <input id="update_date" type="date" name="date" required value="{{ old('date', $formattedDate) }}">
-            {{-- ★ 修正箇所: バリデーションエラーメッセージの表示を追加 --}}
             @error('date')
                 <p class="text-danger">{{ $message }}</p>
             @enderror
@@ -75,7 +60,6 @@
             <label for="update_weight">体重</label>
             <input id="update_weight" type="text" name="weight" step="0.1" placeholder="例: 45.0" required value="{{ $weightValue }}">
             <span class="unit">kg</span>
-            {{-- ★ 修正箇所: バリデーションエラーメッセージの表示を追加 --}}
             @error('weight')
                 <p class="text-danger">{{ $message }}</p>
             @enderror
@@ -85,7 +69,6 @@
             <label for="update_calories">摂取カロリー</label>
             <input id="update_calories" type="text" name="calories" required value="{{ $caloriesValue }}">
             <span class="unit">cal</span>
-            {{-- ★ 修正箇所: バリデーションエラーメッセージの表示を追加 --}}
             @error('calories')
                 <p class="text-danger">{{ $message }}</p>
             @enderror
@@ -93,9 +76,7 @@
 
         <div class="form-group">
             <label for="update_exercise_time">運動時間</label>
-            {{-- old() を使ってバリデーション失敗時に入力値を保持 --}}
             <input id="update_exercise_time" type="time" name="exercise_time" required value="{{ old('exercise_time', $formattedTime) }}">
-            {{-- ★ 修正箇所: バリデーションエラーメッセージの表示を追加 --}}
             @error('exercise_time')
                 <p class="text-danger">{{ $message }}</p>
             @enderror
@@ -104,7 +85,6 @@
         <div class="form-group no-unit">
             <label for="update_exercise_content">運動内容</label>
             <textarea id="update_exercise_content" name="exercise_content" maxlength="120" rows="3">{{ $exerciseContent }}</textarea>
-            {{-- ★ 修正箇所: バリデーションエラーメッセージの表示を追加 --}}
             @error('exercise_content')
                 <p class="text-danger">{{ $message }}</p>
             @enderror
@@ -113,7 +93,6 @@
         <div class="form-actions">
             <div class="center-buttons">
                 <button type="button" class="btn-secondary" onclick="window.location='{{ route('weight-logs') }}'">戻る</button>
-                
                 <button type="submit" class="btn-primary">登録</button>
             </div>
 

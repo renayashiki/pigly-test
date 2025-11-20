@@ -1,32 +1,25 @@
-/* -------------------------------------- */
-/* 認証画面 共通スタイル (app.css) */
-/* -------------------------------------- */
 :root {
-    --primary-color: #333; /* デフォルトテキスト色 */
-    --logo-color: #D87093; /* PiGLyロゴの色を見本画像に合わせた濃いピンクに変更 */
-    
-    /* 修正1: ボタンのグラデーション色を「左が紫、右がピンク」に反転 */
-    --button-gradient: linear-gradient(135deg, #E0BBE4 0%, #FFB6C1 100%); /* 淡い紫から淡いピンクへ */
-    --button-hover-gradient: linear-gradient(135deg, #EDE7F6 0%, #FFC0CB 100%); /* ホバー時は少し明るく */
-    
+    --primary-color: #333;
+    --logo-color: #D87093;
+    --button-gradient: linear-gradient(135deg, #E0BBE4 0%, #FFB6C1 100%);
+    --button-hover-gradient: linear-gradient(135deg, #EDE7F6 0%, #FFC0CB 100%);
     --link-color: #42a4d9;
     --text-color: #333;
     --border-color: #E0E0E0;
-    --negative-color: #F44336; /* バリデーションエラー色 (赤) */
+    --negative-color: #F44336;
     --font-size-base: 16px;
     --font-size-sm: 14px;
-    --card-size: 380px; /* カードの正方形サイズを再調整 */
+    --card-size: 380px;
 }
 
 body {
-    /* 背景グラデーションは前回の修正のまま */
     background: linear-gradient(
-        to bottom right, /* 左上から右下への基本的な方向 */
-        #D1C4E9 0%,       /* 左上: パステル紫 */
-        #F48FB1 30%,       /* 右上方向へ: 濃いパステルピンク */
-        #FFDAB9 80%        /* 下方向へ: 透明度高いサーモンピンク（薄いピーチ） */
-    ); 
-    font-family: 'Arial', sans-serif; 
+        to bottom right,
+        #D1C4E9 0%,
+        #F48FB1 30%,
+        #FFDAB9 80%
+    );
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     color: var(--text-color);
@@ -43,9 +36,9 @@ body {
 
 .form-container {
     background-color: white;
-    width: var(--card-size); 
-    max-width: var(--card-size); 
-    min-height: var(--card-size); 
+    width: var(--card-size);
+    max-width: var(--card-size);
+    min-height: var(--card-size);
     padding: 40px 30px;
     border-radius: 12px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
@@ -58,7 +51,7 @@ body {
 
 .logo {
     font-size: 50px;
-    color: var(--logo-color); 
+    color: var(--logo-color);
     font-family: "EB Garamond", serif;
     font-optical-sizing: auto;
     font-style: normal;
@@ -76,19 +69,19 @@ body {
 .subtitle-detail {
     font-size: var(--font-size-sm);
     color: #666;
-    margin-bottom: 25px; 
+    margin-bottom: 25px;
 }
 
-/* --- フォームと入力欄 --- */
+/*フォームと入力欄*/
 .auth-form {
     text-align: left;
     margin-top: 20px;
-    width: 100%; 
+    width: 100%;
 }
 
 .form-group {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     margin-bottom: 1rem;
 }
 
@@ -114,50 +107,49 @@ body {
 }
 
 .auth-form input:focus {
-    border-color: var(--logo-color); 
+    border-color: var(--logo-color);
     outline: none;
 }
 
-/* --- ボタン --- */
+/*ボタン*/
 .btn-primary {
     width: 100%;
     padding: 12px;
-    /* 修正1: ボタンに淡い紫から淡いピンクのグラデーションを適用 */
-    background: var(--button-gradient); 
-    color: #ffff; 
+    background: var(--button-gradient);
+    color: #ffff;
     border: none;
     border-radius: 6px;
     font-size: var(--font-size-base);
     font-weight: bold;
     cursor: pointer;
-    margin-top: 20px; 
+    margin-top: 20px;
     transition: background 0.2s, box-shadow 0.2s;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:hover {
-    background: var(--button-hover-gradient); 
+    background: var(--button-hover-gradient);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* --- リンク --- */
+/*リンク*/
 .sub-link {
     display: block;
-    margin-top: 25px; 
+    margin-top: 25px;
     font-size: var(--font-size-sm);
-    color: var(--link-color); 
-    text-decoration: underline; 
-    text-align: center; 
+    color: var(--link-color);
+    text-decoration: underline;
+    text-align: center;
 }
 
 .sub-link:hover {
-    text-decoration: underline; 
+    text-decoration: underline;
 }
 
-/* --- エラーメッセージ (FN003-2, FN008-2, FN013-2) --- */
+/*エラーメッセージ*/
 .validation-error {
     display: block;
-    color: var(--negative-color); 
+    color: var(--negative-color);
     font-size: 12px;
     margin-top: 5px;
 }

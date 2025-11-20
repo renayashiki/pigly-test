@@ -17,7 +17,6 @@
 
         <div class="form-group">
             <label for="name">お名前</label>
-            {{-- required を削除 --}}
             <input id="name" type="text" name="name" value="{{ old('name') }}" utofocus autocomplete="name" placeholder="名前を入力">
             @error('name')
                 <span class="validation-error">{{ $message }}</span>
@@ -26,7 +25,7 @@
 
         <div class="form-group">
             <label for="email">メールアドレス</label>
-            {{-- required を削除 --}}
+
             <input id="email" type="email" name="email" value="{{ old('email') }}" autocomplete="username" placeholder="メールアドレスを入力">
             @error('email')
                 <span class="validation-error">{{ $message }}</span>
@@ -35,18 +34,13 @@
 
         <div class="form-group">
             <label for="password">パスワード</label>
-            {{-- required を削除 --}}
             <input id="password" type="password" name="password" autocomplete="new-password" placeholder="パスワードを入力">
             @error('password')
                 <span class="validation-error">{{ $message }}</span>
             @enderror
         </div>
-
-        {{-- パスワード確認フィールドも通常ここに追加されます。もしStep1でパスワード確認がない場合は無視してください --}}
-
         <button type="submit" class="btn-primary">次に進む</button>
     </form>
-
     <a href="{{ route('login') }}" class="sub-link">ログインはこちら</a>
 </div>
 @endsection

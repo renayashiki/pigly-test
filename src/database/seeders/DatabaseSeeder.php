@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // UserSeeder を実行するように修正
+        // UserSeeder を実行
         $this->call([
             UserSeeder::class,
             WeightLogSeeder::class,

@@ -1,24 +1,19 @@
-/* -------------------------------------- */
-/* 会員登録 Step2 固有スタイル (step2.css) */
-/* -------------------------------------- */
-
 .weight-input-group {
     display: flex;
     align-items: center;
-    gap: 10px; /* 入力欄と単位の間のスペース */
+    gap: 10px;
 }
 
 .weight-input-group input[type="number"] {
-    /* 共通CSSの幅を活かしつつ、単位と横並びにする */
     flex: 1;
-    text-align: right; 
-    padding-right: 5px; 
-    max-width: none; 
+    text-align: right;
+    padding-right: 5px;
+    max-width: none;
 }
 
 .weight-input-group span {
     font-size: 16px;
     font-weight: bold;
     color: var(--text-color);
-    line-height: 1.2; 
+    line-height: 1.2;
 }

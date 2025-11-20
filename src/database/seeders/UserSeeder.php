@@ -20,7 +20,6 @@ class UserSeeder extends Seeder
             'name' => 'テスト太郎',
             'email' => 'test@example.com',
             'password' => Hash::make('password'),
-            // usersテーブルに存在しないフィールド（current_weight, target_weight）は削除
             'is_admin' => false,
         ]);
     }

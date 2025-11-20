@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Fortify\Contracts\LogoutResponse; // FortifyのLogoutResponseコントラクト
+use Laravel\Fortify\Contracts\LogoutResponse;
 
 class LogoutRedirectController extends Controller
 {
@@ -15,9 +14,6 @@ class LogoutRedirectController extends Controller
     protected $logoutResponse;
 
     /**
-     * LogoutResponseコントラクトを注入します。
-     * LaravelのIoCコンテナが自動で解決します。
-     *
      * @param  \Laravel\Fortify\Contracts\LogoutResponse  $logoutResponse
      * @return void
      */
@@ -27,7 +23,7 @@ class LogoutRedirectController extends Controller
     }
 
     /**
-     * ログアウト処理を実行し、カスタムリダイレクトに移行します。
+     * ログアウト処理を実行し、カスタムリダイレクトに移行
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -39,7 +35,7 @@ class LogoutRedirectController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // ここでFortifyのLogoutResponseの代わりに、カスタムのRedirectResponseを返す
+        //カスタムのRedirectResponseを返す
         return redirect()->route('login');
     }
 }
