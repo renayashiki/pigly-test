@@ -2,7 +2,7 @@
 
 ## 環境構築
 **Dockerビルド**
-1. `git clone git@git@github.com:renayashiki/pigly-test.git`
+1. `git clone git@github.com:renayashiki/pigly-test.git`
 2. `cd /coachtech/laravel/pigly-test`
 3. DockerDesktopアプリを立ち上げる
 4. `docker-compose up -d --build`
@@ -35,7 +35,7 @@ php artisan migrate
 php artisan db:seed
 ```
 
-> 下記のダミーデータのログイン情報でログインすることが可能
+> 下記ダミーデータのログイン情報でログインすることが可能
 ``` bash
 - email: test@example.com
 - password: password
