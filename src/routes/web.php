@@ -29,7 +29,7 @@ Route::middleware(['guest'])->group(function () {
 
     // 2. 初期目標体重登録画面 Step 2 (/register/step2)
     Route::get('/register/step2', [AuthController::class, 'createStep2'])->name('register.step2');
-    Route::post('/register/step2/complete', [AuthController::class, 'storeStep2'])->name('register.step2.store');
+    Route::post('/register/step2/complete', [AuthController::class, 'storeStep2'])->middleware('throttle:register')->name('register.step2.store');
 
     // 3. ログイン画面 (GET /login)
     Route::get('/login', function () {
@@ -50,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
     // ログアウトルート (404対策済み)
     Route::post('/logout', [LogoutRedirectController::class, 'destroy'])->name('logout');
 
-    // 体重管理画面 (WeightLogControllerを使用)
+    // 体重管理画面
 
     // FN016: ダッシュボード表示
     Route::get('/weight_logs', [WeightLogController::class, 'index'])->name('weight-logs');

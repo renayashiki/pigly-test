@@ -29,7 +29,7 @@ class WeightLogRequest extends FormRequest
             // decimal:0,1 の代わりに、小数点以下1桁または整数を許可する正規表現を使用
             'weight' => 'required|numeric|max:999.9|regex:/^\d+(\.\d{1})?$/',
             // カロリー: 必須、整数
-            'calories' => 'required|integer|min:0|max:10000',
+            'calories' => 'required|numeric|min:0|max:10000',
             // 運動時間: 必須
             'exercise_time' => 'required|date_format:H:i',
             // 運動内容: 任意、最大120文字
@@ -57,7 +57,7 @@ class WeightLogRequest extends FormRequest
 
             // 摂取カロリー (FN027-3)
             'calories.required' => '摂取カロリーを入力してください',
-            'calories.integer' => '数字で入力してください',
+            'calories.numeric' => '数字で入力してください',
 
             // 運動時間 (FN027-4a)
             'exercise_time.required' => '運動時間を入力してください',

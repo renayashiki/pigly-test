@@ -271,7 +271,10 @@
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     width: 90%;
-    max-width: var(--modal-form-max-width); 
+    max-width: var(--modal-form-max-width);
+    max-height: 85vh;
+    overflow-y: auto
+    
 }
 
 /* モーダルヘッダーとアクションの区切り線を完全に削除 */

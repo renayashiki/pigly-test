@@ -225,7 +225,7 @@
                     {{-- type="time"からtype="text"に変更し、placeholder="00:00"を設定。JavaScriptは削除 --}}
                     <input 
                         id="reg_exercise_time" 
-                        type="text" 
+                        type="time"
                         name="exercise_time" 
                         required 
                         value="{{ old('exercise_time', '') }}" 
