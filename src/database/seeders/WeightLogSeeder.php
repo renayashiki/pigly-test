@@ -4,7 +4,10 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+// 必要なモデルをuse
+use App\Models\User;
+use App\Models\WeightTarget;
+use App\Models\WeightLog;
 
 class WeightLogSeeder extends Seeder
 {
@@ -15,55 +18,29 @@ class WeightLogSeeder extends Seeder
      */
     public function run()
     {
-        // 既存のログを全て削除（テスト用）
+        // 既存のログと目標を全て削除
         DB::table('weight_logs')->truncate();
+        DB::table('weight_targets')->truncate();
 
-        $faker = \Faker\Factory::create('ja_JP');
-        $logs = [];
+        // UserSeederで作成されたテストユーザーを取得
+        $user = User::where('email', 'test@example.com')->first();
 
-        // --- 修正点: データ生成期間を現在から過去約3ヶ月間に設定 ---
-        $today = Carbon::today();
-        $pastDate = Carbon::today()->subDays(90); // 過去90日間（約3ヶ月。9月、10月、11月を含む範囲）
-        // -------------------------------------------------------------
-
-        // 30件のダミーデータを作成
-        for ($i = 0; $i < 30; $i++) {
-            // 過去90日間の間でランダムな日付を生成し、Y-m-d形式でフォーマットする
-            $currentDate = $faker->dateTimeBetween($pastDate, $today)->format('Y-m-d');
-
-            // 体重 (例: 50.0kg から 80.0kg の範囲でランダムに生成)
-            $weight = $faker->randomFloat(1, 50, 80);
-
-            // 食事摂取カロリー (例: 1500kcal から 3000kcal の範囲)
-            $calories = $faker->numberBetween(1500, 3000);
-
-            // 運動時間 (例: 00:00 から 02:00 の範囲)
-            $exerciseHour = $faker->numberBetween(0, 2);
-            $exerciseMinute = $faker->numberBetween(0, 59);
-            $exerciseTime = sprintf('%02d:%02d:00', $exerciseHour, $exerciseMinute);
-
-            // 運動内容
-            $exerciseContent = $faker->randomElement([
-                'ウォーキング 30分',
-                'ジムで筋トレと有酸素運動',
-                'ヨガとストレッチ',
-                'ランニング 5km',
-                '水泳 1時間'
-            ]);
-
-            $logs[] = [
-                'user_id' => 1, // ログインユーザーのIDに合わせて調整が必要な場合があります
-                'date' => $currentDate,
-                'weight' => $weight,
-                'calories' => $calories,
-                'exercise_time' => $exerciseTime,
-                'exercise_content' => $exerciseContent,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ];
+        if (!$user) {
+            echo "テストユーザーが見つかりませんでした。UserSeederが実行されているか確認してください。\n";
+            return;
         }
 
-        // データベースに挿入
-        DB::table('weight_logs')->insert($logs);
+        $userId = $user->id;
+
+        // 目標体重のダミーデータを1件作成 (ファクトリを使用)
+        WeightTarget::factory()->create([
+            'user_id' => $userId,
+            'target_weight' => 65.0, // テスト用の目標値
+        ]);
+
+        // 体重ログのダミーデータを35件作成 (ファクトリを使用)
+        WeightLog::factory()->count(35)->create([
+            'user_id' => $userId,
+        ]);
     }
 }

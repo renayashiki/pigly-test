@@ -20,9 +20,7 @@ class UserSeeder extends Seeder
             'name' => 'テスト太郎',
             'email' => 'test@example.com',
             'password' => Hash::make('password'),
-            // Step 2 で登録される想定の初期体重データ (ダミー値)
-            'current_weight' => 75.5,
-            'target_weight' => 65.0,
+            // usersテーブルに存在しないフィールド（current_weight, target_weight）は削除
             'is_admin' => false,
         ]);
     }
