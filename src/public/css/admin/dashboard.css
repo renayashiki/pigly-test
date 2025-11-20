@@ -1,3 +1,4 @@
+/* --- Root Variables --- */
 :root {
     --primary-color: #795548; /* 茶系 */
     --secondary-color: #8D6E63; /* 少し明るい茶系 */
@@ -9,56 +10,73 @@
     --hover-bg: #F5F5F5;
     --positive-color: #4CAF50; /* 緑 */
     --negative-color: #F44336; /* 赤 */
-    /* モーダルフォームの最大幅を定義 (ボタンを広げるために調整) */
-    --modal-form-max-width: 440px;
-    /* 修正1: 必須マーク用の赤色 */
-    --required-bg: #F44336; 
+    --required-bg: #F44336; /* 必須マーク用の赤色 */
+    --modal-form-max-width: 440px; /* モーダルフォームの最大幅 */
 }
 
+/* --- Global Layout (省略) --- */
 .dashboard-container {
     padding: 30px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-/* --- Summary Area --- (省略) */
+/* --- Summary Area (省略) --- */
 .summary-area {
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
+    justify-content: flex-start;
+    gap: 0;
     margin-bottom: 30px;
     text-align: center;
 }
 
-.summary-card {
+.summary-card-group {
+    display: flex;
+    flex: 1;
     background-color: white;
-    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    flex-grow: 1;
 }
 
-.summary-card .label {
+.summary-item {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+/* 縦の区切り線 */
+.summary-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    right: 0;
+    height: 70%;
+    width: 1px;
+    background-color: var(--border-color);
+}
+
+.summary-item .label {
     display: block;
     font-size: 14px;
     color: #666;
     margin-bottom: 5px;
 }
 
-.summary-card .value {
+.summary-item .value {
     font-size: 32px;
     font-weight: bold;
 }
 
-.summary-card.diff .value {
+.summary-item.diff .value {
     color: var(--text-color);
 }
 
-.summary-card.diff.positive .value {
+.summary-item.diff.positive .value {
     color: var(--positive-color);
 }
 
-
+/* --- Action Bar (検索フォーム) --- */
 .action-bar {
     display: flex;
     justify-content: flex-start;
@@ -87,32 +105,50 @@
     width: 130px;
 }
 
-.action-bar .search-button {
-    padding: 8px 15px;
-}
-
+/* 検索ボタンとリセットボタンの色を調整 */
+.action-bar .search-button,
 .action-bar .btn-reset {
     padding: 8px 15px;
-    background-color: #E0E0E0;
-    color: #333;
-}
-
-/* データ追加ボタン: 常時グラデーション */
-.action-bar .data-add-button {
-    padding: 10px 20px;
-    margin-left: auto; 
-    background-image: var(--gradient-main); 
-    background-color: transparent; 
-    color: white;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
     transition: opacity 0.2s;
 }
-.action-bar .data-add-button:hover {
-    opacity: 0.9; 
+
+/* 検索ボタン（btn-secondary）は濃いグレーに見えるように調整 */
+.action-bar .search-button {
+    background-color: #757575; /* 濃いめのグレー */
+    color: white;
+    border: none;
 }
 
+/* リセットボタンの色 */
+.action-bar .btn-reset {
+    background-color: #E0E0E0;
+    color: #333;
+    border: none;
+}
+
+/* データ追加ボタンのスタイルを強化し、見本通りのグラデーションを適用 */
+.action-bar .data-add-button {
+    padding: 10px 20px;
+    margin-left: auto;
+    background-image: var(--gradient-main);
+    background-color: transparent; /* グラデーションを使うため背景色は透明に */
+    color: white;
+    border: none;
+    border-radius: 15px; /* 角丸を適用 */
+    cursor: pointer;
+    transition: opacity 0.2s;
+    font-weight: bold;
+    /* !important は極力避けるべきですが、既存スタイルを上書きするため一時的に利用 */
+    /* より良い方法は、他のCSSファイルをチェックして、より詳細なセレクタで上書きすること */
+}
+
+.action-bar .data-add-button:hover {
+    opacity: 0.9;
+}
+
+/* --- Search Info --- */
 .search-info {
     font-size: 14px;
     color: #666;
@@ -122,6 +158,7 @@
     border-radius: 5px;
 }
 
+/* --- Table (Log) --- */
 .log-table-card {
     background-color: white;
     padding: 20px 25px 0px;
@@ -141,7 +178,6 @@
     font-weight: bold;
     padding: 15px 10px;
     text-align: left;
-/* 従来の線を完全に削除 */
     border-bottom: none;
 }
 
@@ -151,32 +187,26 @@
     text-align: left;
 }
 
-/* テーブル行のホバー機能 */
 .log-table tbody tr.log-item:hover {
     background-color: var(--hover-bg);
     cursor: default;
 }
 
 .log-table thead tr {
-    /* 擬似要素の基準点とする */
     position: relative;
-    /* displayをblockにするとテーブルが崩れるため、displayは変更しない */
 }
 
+/* テーブルヘッダー下のグラデーション線: 再度確認し、position:relative/absoluteの組み合わせで描画 */
 .log-table thead tr::after {
     content: '';
-    /* <tr>全体の下に絶対配置 */
     position: absolute;
-    /* テーブル全体の幅ではなく、<tr>の幅に合わせる */
     width: 100%;
-    /* <tr>の高さに影響されないように、必ず下端に配置 */
-    bottom: -2px; /* 線の太さ分下にずらす */
+    bottom: -2px; /* 線の位置を調整 */
     left: 0;
     height: 2px;
     background-image: var(--gradient-main);
-    z-index: 10; /* 他の線の上に表示されるようにする */
+    z-index: 10;
 }
-
 
 /* カラム幅の調整 */
 .date-col { width: 20%; }
@@ -185,10 +215,10 @@
 .time-col { width: 20%; }
 .action-col { width: 10%; text-align: center; }
 
-/* --- ページネーション --- (省略) */
+/* --- Pagination (省略) --- */
 .pagination-area {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     padding: 20px 0;
 }
 
@@ -200,13 +230,12 @@
     margin: 0;
 }
 
-/* 各ページリンク（aタグ）の基本スタイル */
 .page-link {
     display: block;
     padding: 8px 12px;
     text-decoration: none;
     color: var(--secondary-color);
-    border: none; 
+    border: none;
     border-radius: 5px;
     transition: background-color 0.2s, color 0.2s, background-image 0.2s;
     min-width: 38px;
@@ -214,31 +243,28 @@
     background-color: transparent;
 }
 
-/* アクティブなページ（現在のページ）: 常時グラデーション */
 .page-link.active {
     background-image: var(--gradient-main);
-    background-color: transparent; 
+    background-color: transparent;
     color: white;
     font-weight: bold;
 }
 
-/* ページネーション数字のグラデーションホバー時のスタイル */
 .page-link:not(.active):not(.disabled):hover {
-    background-image: var(--gradient-main); 
-    background-color: transparent; 
-    color: white; 
+    background-image: var(--gradient-main);
+    background-color: transparent;
+    color: white;
 }
 
-/* 無効化されたリンクのスタイル */
 .page-link.disabled {
     pointer-events: none;
     opacity: 0.5;
-    background-color: transparent; 
+    background-color: transparent;
     border: none;
     color: #999;
 }
 
-/* 鉛筆ボタン (省略) */
+/* --- Icons and Buttons (省略) --- */
 .btn-icon {
     display: inline-flex;
     align-items: center;
@@ -249,25 +275,20 @@
     cursor: pointer;
 }
 
-/* 鉛筆アイコン自体 (SVG要素を想定) */
 .icon-pencil {
     width: 18px;
     height: 18px;
     color: var(--purple-color);
     background-image: none;
-    -webkit-background-clip: unset;
     background-clip: unset;
-    transition: none; 
+    transition: none;
 }
 
-/* ホバーは透明度調整のみ */
 .btn-icon:hover {
     opacity: 0.8;
 }
 
-/* -------------------------------------- */
-/* モーダルウィンドウ共通スタイル */
-/* -------------------------------------- */
+/* --- Modal Base and Form Elements (省略) --- */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -296,9 +317,8 @@
     overflow-y: auto
 }
 
-/* モーダルヘッダーとアクションの区切り線を完全に削除 */
 .modal-header {
-    border-bottom: none; 
+    border-bottom: none;
     padding-bottom: 15px;
     margin-bottom: 20px;
 }
@@ -311,110 +331,95 @@
 
 .modal-actions {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     gap: 10px;
     padding-top: 20px;
     border-top: none;
 }
 
-/* --- フォーム共通 --- */
 .modal-form .form-group {
     margin-bottom: 20px;
     position: relative;
-    /* 単位の表示のためのパディングはinput-unit-wrapper内のFlexで処理 */
 }
 
-/* !!! 修正点: inputとunitをまとめるための新しいラッパーを定義 !!! */
 .modal-form .input-unit-wrapper {
-    display: flex; /* Flexboxを使ってinputとunitを横並びにする */
-    align-items: center; /* 垂直方向の中央揃え */
-    gap: 10px; /* inputとunitの間に少しスペースを開ける */
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-
-/* ラベル内のテキストと必須マークの配置調整 */
 .modal-form .form-group label {
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
     font-weight: bold;
     margin-bottom: 5px;
     width: 100%;
 }
 
-/* 必須マークのスタイル */
 .modal-form .form-group label::after {
     content: "必須";
-    background-color: var(--required-bg); 
+    background-color: var(--required-bg);
     color: white;
     font-size: 10px;
     font-weight: bold;
     padding: 3px 6px;
     border-radius: 3px;
-    margin-left: 10px; 
+    margin-left: 10px;
     display: inline-block;
     white-space: nowrap;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
 
+.modal-form .form-group.not-required label::after {
+    content: none;
+    margin-left: 0;
+    padding: 0;
+}
 
-/* 共通の入力欄スタイル */
-.modal-form input[type="date"], 
+.modal-form input[type="date"],
 .modal-form input[type="time"],
-.modal-form textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 16px;
-}
-
-/* 体重、摂取カロリー（type="text"）の入力欄調整 (修正点) */
+.modal-form textarea,
 .modal-form input[type="text"] {
     border: 1px solid var(--border-color);
     border-radius: 5px;
     box-sizing: border-box;
     font-size: 16px;
-    padding: 10px; 
-    flex-grow: 1; /* input-unit-wrapper内で残りのスペースを全て使用 */
-    width: 100%; /* Flexbox内で動作させるため */
+    padding: 10px;
+    width: 100%;
 }
 
-/* 単位表示のスタイル (修正点) */
+.modal-form input[type="text"] {
+    flex-grow: 1;
+}
+
 .modal-form .unit {
-    position: static; /* absoluteを解除し、Flexアイテムとして配置 */
+    position: static;
     color: #999;
-    font-size: 16px; 
-    line-height: 1.5; 
+    font-size: 16px;
+    line-height: 1.5;
     text-align: right;
-    flex-shrink: 0; /* 単位が縮小しないようにする */
+    flex-shrink: 0;
     padding-right: 5px;
 }
 
-/* 運動内容のフォームグループ（単位がないと仮定）のパディングと幅の調整 */
 .modal-form .form-group.no-unit {
     padding-right: 0;
 }
 .modal-form .form-group.no-unit textarea {
-    width: 100%;
-    padding-right: 10px;
-    clear: both; 
+    clear: both;
 }
 
-
-/* !!! 修正点: バリデーションエラーの表示位置を修正 !!! */
-.error-message { 
+.error-message {
     color: var(--negative-color);
     font-size: 12px;
-    margin-top: 5px; /* input/wrapper の下に確実にスペースを空ける */
+    margin-top: 5px;
     display: block;
-    clear: both; /* 左右の float や flex の影響を受けないようにする */
+    clear: both;
 }
 
-
-/* モーダル内プライマリボタン: 常時グラデーション */
+/* モーダル内のプライマリボタンにもグラデーションを適用 */
 .btn-primary {
-    width: 150px; 
+    width: 150px;
     padding: 10px 20px;
     background-image: var(--gradient-main);
     background-color: transparent;
@@ -422,12 +427,12 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: opacity 0.2s; 
+    transition: opacity 0.2s;
     font-weight: bold;
 }
 
 .btn-secondary {
-    width: 150px;
+    width: 100px;
     padding: 10px 20px;
     background-color: #E0E0E0;
     color: #333;
@@ -438,15 +443,14 @@
     font-weight: bold;
 }
 
-/* ホバーは透明度調整のみ */
 .btn-primary:hover {
-    opacity: 0.9; 
+    opacity: 0.9;
 }
 .btn-secondary:hover {
     opacity: 0.8;
 }
 
-/* アラートメッセージ (省略) */
+/* --- Alerts --- */
 .alert {
     padding: 15px;
     margin-bottom: 20px;
@@ -464,10 +468,4 @@
     background-color: #ffebee;
     color: #c62828;
     border: 1px solid #ef9a9a;
-}
-
-.modal-form .form-group.not-required label::after {
-    content: none; /* 必須マークを非表示にする */
-    margin-left: 0; /* マージンも削除 */
-    padding: 0;
 }
