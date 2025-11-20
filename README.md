@@ -42,17 +42,18 @@ php artisan db:seed
 ```
 
 ## 使用技術(実行環境)
-- PHP
-- Laravel
-- MySQL
+- PHP: 7.3 〜 8.0
+- Laravel: 8.75 以上
+- MySQL: 8.0.26
 
 ## テーブル設計
-![user table](./docs/user table.png)
-![weight_target table](./docs/weight_target table.png)
-![wight_logs table](./docs/wight_logs table.png)
+![usersテーブル](./docs/user table.png)
+![weight_targetテーブル](./docs/weight_target table.png)
+![weight_logsテーブル](./docs/wight_logs table.png)
 
 ## ER図
 
+![ER Diagram](./docs/er_diagram.drawio.png)
 
 ## URL
 - 開発環境：http://localhost/
@@ -60,4 +61,3 @@ php artisan db:seed
 - ログイン画面: http://localhost/login
 - 新規会員登録: http://localhost/register/step1
 - 管理画面: http://localhost/weight_logs
-- 
