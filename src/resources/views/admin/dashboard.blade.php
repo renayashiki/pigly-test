@@ -146,7 +146,7 @@
                         {{-- FN016-3: カロリー --}}
                         <td class="calorie-col">{{ $log->calories }} cal</td>
                         {{-- FN016-4: 運動時間 --}}
-                        <td class="time-col">{{ $log->exercise_time }}</td>
+                        <td class="time-col">{{ \Carbon\Carbon::parse($log->exercise_time)->format('H:i') }}</td>
                         <td class="action-col">
                             {{-- FN016-5: 詳細/更新画面へのリンク --}}
                             <a href="{{ route('edit_log', ['weightLogId' => $log->id]) }}" class="btn-icon">
