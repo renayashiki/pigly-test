@@ -92,8 +92,9 @@
         </div>
         
         {{-- 検索フォームとアクションバーを統合 --}}
-        <form method="GET" action="{{ route('search_logs') }}" class="action-bar search-form-inline">
-            
+        <div class="log-table-card">
+            <form method="GET" action="{{ route('search_logs') }}" class="action-bar search-form-inline">
+
             {{-- FN017: 日付 (古い日付) (見本に合わせたインライン配置) --}}
             <div class="form-group-inline date-from">
                 <input id="date_from" type="date" name="date_from" value="{{ $oldDateFrom }}">
@@ -114,9 +115,9 @@
             @endif
 
             {{-- データ追加ボタン (FN018-3) --}}
-            <button type="button" class="btn-primary data-add-button" onclick="openModal('register-modal')">データを追加</button>
+                <button type="button" class="btn-primary data-add-button" onclick="openModal('register-modal')">データを追加</button>
         </form>
-
+        
         {{-- 検索結果情報 (FN017-c) --}}
         @if($isSearching)
             <div class="search-info">
@@ -124,8 +125,7 @@
             </div>
         @endif
 
-        <div class="log-table-container">
-            <table class="log-table">
+        <table class="log-table">
                 <thead>
                     <tr>
                         <th class="date-col">日付</th>
