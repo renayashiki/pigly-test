@@ -11,7 +11,7 @@
 1. `docker-compose exec php bash`
 2. `composer install`
 3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.envファイルを作成
-4. .envに以下の環境変数を追加
+4. .envに以下の環境変数を修正
 ``` text
 DB_CONNECTION=mysql
 DB_HOST=mysql
@@ -35,7 +35,7 @@ php artisan migrate
 php artisan db:seed
 ```
 
-> * 下記のダミーデータのログイン情報でログインすることが可能*
+> 下記のダミーデータのログイン情報でログインすることが可能
 ``` bash
 - email: test@example.com
 - password: password
@@ -47,9 +47,9 @@ php artisan db:seed
 - MySQL: 8.0.26
 
 ## テーブル設計
-![usersテーブル](./docs/user table.png)
-![weight_targetテーブル](./docs/weight_target table.png)
-![weight_logsテーブル](./docs/wight_logs table.png)
+![usersテーブル](./docs/user_table.png)
+![weight_targetテーブル](./docs/weight_target_table.png)
+![weight_logsテーブル](./docs/weight_logs_table.png)
 
 ## ER図
 
