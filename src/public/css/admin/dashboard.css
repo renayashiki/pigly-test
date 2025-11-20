@@ -432,10 +432,10 @@
 }
 
 .btn-secondary {
-    width: 100px;
+    width: 150px;
     padding: 10px 20px;
     background-color: #E0E0E0;
-    color: #333;
+    color: #585757;
     border: none;
     border-radius: 5px;
     cursor: pointer;
